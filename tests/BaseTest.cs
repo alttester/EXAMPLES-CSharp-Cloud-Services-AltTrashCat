@@ -2,6 +2,7 @@ using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using BrowserStack;
 using OpenQA.Selenium.Appium.iOS;
+using OpenQA.Selenium;
 
 namespace alttrashcat_tests_csharp.tests
 {
@@ -29,13 +30,13 @@ namespace alttrashcat_tests_csharp.tests
             browserstackOptions.Add("userName", BROWSERSTACK_USERNAME);
             browserstackOptions.Add("accessKey", BROWSERSTACK_ACCESS_KEY);
             capabilities.AddAdditionalCapability("bstack:options", browserstackOptions);
+            capabilities.AddAdditionalCapability("appium:app", BROWSERSTACK_APP_ID_SDK_201);
             capabilities.AddAdditionalCapability("platformName", "android");
             capabilities.AddAdditionalCapability("platformVersion", "11.0");
             capabilities.AddAdditionalCapability("appium:deviceName", "Samsung Galaxy S21");
             // capabilities.AddAdditionalCapability("platformName", "ios");
             // capabilities.AddAdditionalCapability("platformVersion", "16");
             // capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 14");
-            capabilities.AddAdditionalCapability("appium:app", BROWSERSTACK_APP_ID_SDK_201);
 
             browserStackLocal = new Local();
             List<KeyValuePair<string, string>> bsLocalArgs = new List<KeyValuePair<string, string>>() {
@@ -48,6 +49,9 @@ namespace alttrashcat_tests_csharp.tests
 
             Thread.Sleep(30000);
             Console.WriteLine("Appium driver started");
+            // IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow")); //iOS
+            // ll.Click(); //iOS
+
         }
 
         //browserstack has an idle timeout of max 300 seconds

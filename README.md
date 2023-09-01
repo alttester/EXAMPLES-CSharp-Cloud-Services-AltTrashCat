@@ -1,6 +1,4 @@
 This is an example repository for running tests using `AltTester Unity SDK 2.0.1` and BrowserStack App Automate. 
-For more details and instructions about how to run tests in this setup, check out [our article](https://alttester.com/blog/) on this topic.
-
 
 ## Executing tests using `AltTester Unity SDK 2.0.1` (without BrowserStack).
 ### Prerequisite

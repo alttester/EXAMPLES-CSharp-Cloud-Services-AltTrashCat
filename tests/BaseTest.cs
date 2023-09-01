@@ -23,20 +23,20 @@ namespace alttrashcat_tests_csharp.tests
             AppiumOptions capabilities = new AppiumOptions();
             Dictionary<string, object> browserstackOptions = new Dictionary<string, object>();
             browserstackOptions.Add("projectName", "TrashCat");
-            browserstackOptions.Add("buildName", "TrashCat201Android");
+            browserstackOptions.Add("buildName", "TrashCat201");
             browserstackOptions.Add("sessionName", "tests - " + DateTime.Now.ToString("MMMM dd - HH:mm"));
             browserstackOptions.Add("local", "true");
             browserstackOptions.Add("idleTimeout", "300");
             browserstackOptions.Add("userName", BROWSERSTACK_USERNAME);
             browserstackOptions.Add("accessKey", BROWSERSTACK_ACCESS_KEY);
             capabilities.AddAdditionalCapability("bstack:options", browserstackOptions);
-            capabilities.AddAdditionalCapability("appium:app", BROWSERSTACK_APP_ID_SDK_201);
             capabilities.AddAdditionalCapability("platformName", "android");
             capabilities.AddAdditionalCapability("platformVersion", "11.0");
             capabilities.AddAdditionalCapability("appium:deviceName", "Samsung Galaxy S21");
             // capabilities.AddAdditionalCapability("platformName", "ios");
             // capabilities.AddAdditionalCapability("platformVersion", "16");
             // capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 14");
+            capabilities.AddAdditionalCapability("appium:app", BROWSERSTACK_APP_ID_SDK_201);
 
             browserStackLocal = new Local();
             List<KeyValuePair<string, string>> bsLocalArgs = new List<KeyValuePair<string, string>>() {

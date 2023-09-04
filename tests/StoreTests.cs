@@ -10,7 +10,8 @@ namespace alttrashcat_tests_csharp.tests
         [SetUp]
         public void Setup()
         {
-            altDriver = new AltDriver(port: 13000);
+            String HOST_ALT_SERVER = Environment.GetEnvironmentVariable("HOST_ALT_SERVER");
+            altDriver = new AltDriver(HOST_ALT_SERVER, port: 13000, connectTimeout: 3000);
             storePage = new StorePage(altDriver);
             storePage.LoadScene();
             mainMenuPage = new MainMenuPage(altDriver);

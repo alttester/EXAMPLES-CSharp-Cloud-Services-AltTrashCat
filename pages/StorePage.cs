@@ -141,7 +141,7 @@ namespace alttrashcat_tests_csharp.pages
             if (state1 == state2) return false;
             return true;
         }
-               /// <summary>
+        /// <summary>
         /// tabName = Items, Character, Accessories, Themes
         /// index = the position of the element in the list
         /// newName = the value for renaming the element

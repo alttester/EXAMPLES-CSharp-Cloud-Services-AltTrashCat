@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="AltTester-Driver" Version="2.0.1" />
     <PackageReference Include="Appium.WebDriver" Version="4.4.0" />
-    <PackageReference Include="BrowserStackLocal" Version="2.3.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="nunit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />

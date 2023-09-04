@@ -1,0 +1,33 @@
+name: Sauce Labs Tests
+
+on:
+  push:
+    branches:
+      - SauceLabs
+  pull_request:
+    branches:
+      - SauceLabs
+ 
+env:
+  SAUCE_USERNAME: ${{secrets.SAUCE_USERNAME}}
+  SAUCE_ACCESS_KEY: ${{secrets.SAUCE_ACCESS_KEY}}
+  
+jobs:
+  csharp-tests-job:
+    name: 'CSharp tests on SauceLabs'
+    runs-on: [self-hosted, services]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Run tests on Sauce Labs
+        run: dotnet test

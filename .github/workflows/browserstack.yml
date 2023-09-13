@@ -1,6 +1,8 @@
 name: BrowserStack TrashCat
 on:
-  push
+  push:
+    branches:
+      - browserstack-example
 
 env:
   BROWSERSTACK_USERNAME: ${{secrets.BROWSERSTACK_USERNAME}}

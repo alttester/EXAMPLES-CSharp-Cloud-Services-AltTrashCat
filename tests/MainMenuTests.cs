@@ -2,7 +2,6 @@ namespace alttrashcat_tests_csharp.tests
 {
     public class MainMenuTests : BaseTest
     {
-        AltDriver altDriver;
         MainMenuPage mainMenuPage;
         StorePage storePage;
         GamePlay gamePlayPage;
@@ -12,7 +11,6 @@ namespace alttrashcat_tests_csharp.tests
         [SetUp]
         public void Setup()
         {
-            altDriver = new AltDriver(host: "192.168.11.251");
             mainMenuPage = new MainMenuPage(altDriver);
             gamePlayPage = new GamePlay(altDriver);
             settingsPage = new SettingsPage(altDriver);
@@ -222,7 +220,6 @@ namespace alttrashcat_tests_csharp.tests
         [TearDown]
         public void Dispose()
         {
-            altDriver.Stop();
             Thread.Sleep(1000);
         }
 

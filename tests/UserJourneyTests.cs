@@ -5,7 +5,6 @@ namespace alttrashcat_tests_csharp.tests
 
     public class UserJourneyTests : BaseTest
     {
-        AltDriver altDriver;
         MainMenuPage mainMenuPage;
         GamePlay gamePlay;
         PauseOverlayPage pauseOverlayPage;
@@ -18,7 +17,6 @@ namespace alttrashcat_tests_csharp.tests
         [SetUp]
         public void Setup()
         {
-            altDriver = new AltDriver();
             mainMenuPage = new MainMenuPage(altDriver);
             gamePlay = new GamePlay(altDriver);
             pauseOverlayPage = new PauseOverlayPage(altDriver);
@@ -204,7 +202,6 @@ namespace alttrashcat_tests_csharp.tests
         [TearDown]
         public void Dispose()
         {
-            altDriver.Stop();
             Thread.Sleep(1000);
         }
     }

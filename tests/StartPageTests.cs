@@ -3,13 +3,11 @@ namespace alttrashcat_tests_csharp.tests
 {
     public class StartPageTests : BaseTest
     {
-        private AltDriver altDriver;
         private MainMenuPage mainMenuPage;
         private StartPage startPage;
         [SetUp]
         public void Setup()
         {   
-            altDriver = new AltDriver();
             startPage = new StartPage(altDriver);
             startPage.Load();
             mainMenuPage = new MainMenuPage(altDriver);
@@ -30,7 +28,6 @@ namespace alttrashcat_tests_csharp.tests
         [TearDown]
         public void Dispose()
         {
-            altDriver.Stop();
             Thread.Sleep(1000);
         }
     }

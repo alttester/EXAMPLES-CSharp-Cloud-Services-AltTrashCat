@@ -8,6 +8,7 @@ namespace alttrashcat_tests_csharp.tests
 {
     public class BaseTest
     {
+        public AltDriver altDriver;
         Local browserStackLocal;
         AndroidDriver<AndroidElement> appiumDriver;
         // IOSDriver<IOSElement> appiumDriver;
@@ -49,6 +50,9 @@ namespace alttrashcat_tests_csharp.tests
 
             Thread.Sleep(30000);
             Console.WriteLine("Appium driver started");
+            altDriver = new AltDriver();
+            Console.WriteLine("AltDriver started");
+
             // IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow")); //iOS
             // ll.Click(); //iOS
 
@@ -69,6 +73,7 @@ namespace alttrashcat_tests_csharp.tests
         {
             Console.WriteLine("Ending");
             appiumDriver.Quit();
+            altDriver.Stop();
             if (browserStackLocal != null)
             {
                 browserStackLocal.stop();

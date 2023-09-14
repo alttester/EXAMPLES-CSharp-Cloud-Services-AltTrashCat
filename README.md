@@ -11,6 +11,10 @@ This branch contains **C# tests for a TrashCat endless runner build**, utilizing
 ```
 dotnet add package AltTester-Driver --version 2.0.1
 ```
+6. Install Appium WebDriver dependency:
+```
+dotnet add package Appium.WebDriver --version 4.4.0
+```
 
 ## Tests execution
 
@@ -37,4 +41,4 @@ dotnet test --filter <test_class_name>
 ```
 dotnet test --filter <test_class_name>.<test_name>
 ```
-Here you can read [other articles from AltTester blog](https://alttester.com/blog/)
+Here you can read [other articles from AltTester blog](https://alttester.com/blog/).

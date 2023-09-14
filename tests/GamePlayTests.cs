@@ -2,7 +2,6 @@ namespace alttrashcat_tests_csharp.tests
 {
     public class GamePlayTests : BaseTest
     {
-        AltDriver altDriver;
         MainMenuPage mainMenuPage;
         GamePlay gamePlayPage;
         PauseOverlayPage pauseOverlayPage;
@@ -13,8 +12,6 @@ namespace alttrashcat_tests_csharp.tests
         [SetUp]
         public void Setup()
         {
-            String HOST_ALT_SERVER = Environment.GetEnvironmentVariable("HOST_ALT_SERVER");
-            altDriver = new AltDriver(HOST_ALT_SERVER, port: 13000, connectTimeout: 3000);
             mainMenuPage = new MainMenuPage(altDriver);
             gamePlayPage = new GamePlay(altDriver);
             pauseOverlayPage = new PauseOverlayPage(altDriver);
@@ -344,7 +341,6 @@ namespace alttrashcat_tests_csharp.tests
         {
             mainMenuPage.LoadScene();
             settingsPage.DeleteData();
-            altDriver.Stop();
             Thread.Sleep(1000);
         }
         //// helping methods

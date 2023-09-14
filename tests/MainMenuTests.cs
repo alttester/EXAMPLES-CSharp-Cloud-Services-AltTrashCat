@@ -2,7 +2,6 @@ namespace alttrashcat_tests_csharp.tests
 {
     public class MainMenuTests : BaseTest
     {
-        AltDriver altDriver;
         MainMenuPage mainMenuPage;
         StorePage storePage;
         GamePlay gamePlayPage;
@@ -12,8 +11,6 @@ namespace alttrashcat_tests_csharp.tests
         [SetUp]
         public void Setup()
         {
-            String HOST_ALT_SERVER = Environment.GetEnvironmentVariable("HOST_ALT_SERVER");
-            altDriver = new AltDriver(HOST_ALT_SERVER, port: 13000, connectTimeout: 3000);
             mainMenuPage = new MainMenuPage(altDriver);
             gamePlayPage = new GamePlay(altDriver);
             settingsPage = new SettingsPage(altDriver);
@@ -218,13 +215,6 @@ namespace alttrashcat_tests_csharp.tests
             var path = "../../../test-screenshot.png";
             altDriver.GetPNGScreenshot(path);
             FileAssert.Exists(path);
-        }
-
-        [TearDown]
-        public void Dispose()
-        {
-            altDriver.Stop();
-            Thread.Sleep(1000);
         }
 
         public static List<string> ListOfComponentNamesForStoreButton()

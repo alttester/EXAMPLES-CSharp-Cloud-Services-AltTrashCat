@@ -3,7 +3,7 @@ This branch contains **C# tests for a TrashCat endless runner build**, utilizing
 ## Prerequisite
 
 1. Download and install [.NET SDK](https://dotnet.microsoft.com/en-us/download).
-2. Create a public virtual machine following the rules from this article. - insert the saucelabs article here
+2. Have a virtual machine with AltTester Desktop installed on it, which can either be a Windows virtual machine running AltTester Desktop in GUI mode or a Linux machine running in batch mode (note that the batch mode requires an [AltTester license](https://alttester.com/alttester/#pricing)). 
 3. Have a TrashCat build [instrumented with AltTester SDK 2.0.*](https://alttester.com/walkthrough-tutorial-upgrading-trashcat-to-2-0-x/#Instrument%20TrashCat%20with%20AltTester%20Unity%20SDK%20v.2.0.x). This build needs to have the predefined IP, the IP address of the previous virtual machine.
 4. Have [AltTester Desktop app, 2.0.*](https://alttester.com/alttester/) installed on the virtual machine (to have AltServer waiting for connections from AltDriver).
 - For SDK v 2.0.* => need to use AltTester Desktop 2.0.*
@@ -16,19 +16,22 @@ dotnet add package AltTester-Driver --version 2.0.1
 dotnet add package Appium.WebDriver --version 4.4.0
 ```
 
+Make sure that **AltTester Desktop is running** on the virtual machine before executing the tests.
+
+Also, make sure that Sauce Labs credentials and VM's IP are set as environment variables:
+```
+set SAUCE_USERNAME "yourUsername"
+set SAUCE_ACCESS_KEY "yourAccessKey"
+set HOST_ALT_SERVER "your VM's IP"
+```
+
 ## Tests execution
 
-1. Execute all tests:
+Execute all tests:
 
 ```
 dotnet test
 ```
-
-2. Kill app:
-```
-adb shell am force-stop com.Altom.TrashCat
-```
-
 
 ### Run all tests from a specific class / file
 
@@ -41,4 +44,5 @@ dotnet test --filter <test_class_name>
 ```
 dotnet test --filter <test_class_name>.<test_name>
 ```
+## Other:
 Here you can read [other articles from AltTester blog](https://alttester.com/blog/).

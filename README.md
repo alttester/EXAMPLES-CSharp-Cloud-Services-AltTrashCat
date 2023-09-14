@@ -1,4 +1,4 @@
-This branch contains **C# tests for a TrashCat endless runner build**, utilizing the AltTester framework. These tests are set up to execute on Android devices through the **Sauce Labs cloud service**. They will be performed on a build that has been uploaded to a personal Sauce Labs account and is instrumented with a predefined IP address. This IP corresponds to a public virtual machine where AltTester Desktop is downloaded and launched before starting the test execution process.
+This branch contains **C# tests for a TrashCat endless runner build**, utilizing the AltTester framework. These tests are set up to execute on Android and iOS devices through the **Sauce Labs cloud service**. They will be performed on a build that has been uploaded to a personal Sauce Labs account and is instrumented with a predefined IP address. This IP corresponds to a public virtual machine where AltTester Desktop is downloaded and launched before starting the test execution process.
 
 ## Prerequisite
 

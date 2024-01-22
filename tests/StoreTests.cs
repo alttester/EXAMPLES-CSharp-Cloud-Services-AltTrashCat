@@ -25,10 +25,10 @@ namespace alttrashcat_tests_csharp.tests
         public void TestGetMoreMoneyAddsSpecificSum()
         {
             int currentAmountOfFishbones = storePage.GetTotalAmountOfCoins();
-            int currentAmountOfPremiumCoins= storePage.GetTotalAmountOfPremiumCoins();
+            int currentAmountOfPremiumCoins = storePage.GetTotalAmountOfPremiumCoins();
             storePage.GetMoreMoney();
             Assert.True(storePage.GetTotalAmountOfCoins() - currentAmountOfFishbones == 1000000);
-            Assert.True(storePage.GetTotalAmountOfPremiumCoins()- currentAmountOfPremiumCoins == 1000);
+            Assert.True(storePage.GetTotalAmountOfPremiumCoins() - currentAmountOfPremiumCoins == 1000);
         }
 
         [Test]

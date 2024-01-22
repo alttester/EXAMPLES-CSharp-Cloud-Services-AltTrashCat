@@ -1,0 +1,11 @@
+userName: YourUsername
+accessKey: YourAccessKey
+platforms:
+  - os: Windows
+    osVersion: 11
+    browserName: Chrome
+    browserVersion: 118
+browserstackLocal: true
+buildName: browserstack-webgl-trashcat
+projectName: BrowserStack TrashCat
+idleTimeout: 3600

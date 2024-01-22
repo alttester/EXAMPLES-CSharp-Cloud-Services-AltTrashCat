@@ -7,7 +7,7 @@ namespace alttrashcat_tests_csharp.tests
         private StartPage startPage;
         [SetUp]
         public void Setup()
-        {   
+        {
             startPage = new StartPage(altDriver);
             startPage.Load();
             mainMenuPage = new MainMenuPage(altDriver);

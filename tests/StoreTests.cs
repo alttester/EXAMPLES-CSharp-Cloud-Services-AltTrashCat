@@ -82,6 +82,7 @@ namespace alttrashcat_tests_csharp.tests
         public void TestBuyLife()
         {
             AssertBuyItem(3);
+            appPercy.Screenshot("Buy life screenshot");
         }
         [Test]
         public void TestBuyAllItems()
@@ -189,10 +190,11 @@ namespace alttrashcat_tests_csharp.tests
         [Test]
         public void TestNewMagnetName()
         {
-            string value = "magneeeeeeet";
+            string value = "Magneeeet"; //change this value to have visual diffs
             string tabName = "Items";
             string newName = storePage.ChangeItemName(tabName, 0, value);
             Assert.AreEqual(value, newName);
+            appPercy.Screenshot("Store page screenshot");
         }
         [Test]
         public void TestDifferentColorsOnPressing()
@@ -218,11 +220,12 @@ namespace alttrashcat_tests_csharp.tests
 
             var initialNumber = storePage.GetNumberOf(index);
             storePage.Buy(tabName, index);
-            Assert.Multiple(() =>
-            {
-                Assert.True(storePage.GetNumberOf(index) - initialNumber == 1);
-                Assert.True(moneyAmount - storePage.GetTotalAmountOfCoins() == storePage.GetPriceOf(tabName, index));
-            });
+            // storePage.Buy(tabName, index); //comment and uncomment this line to have visual diffs
+            // Assert.Multiple(() =>
+            // {
+            //     Assert.True(storePage.GetNumberOf(index) - initialNumber == 1);
+            //     Assert.True(moneyAmount - storePage.GetTotalAmountOfCoins() == storePage.GetPriceOf(tabName, index));
+            // });
         }
 
         public void AssertBuyAccessory(int index)

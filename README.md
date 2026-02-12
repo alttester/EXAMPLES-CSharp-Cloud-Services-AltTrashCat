@@ -8,16 +8,16 @@ All examples use the [TrashCat](https://github.com/AltTester/TrashCat) sample ga
 
 | Cloud Provider | Branch | Description |
 |---|---|---|
-| **TestMu AI (LambdaTest)** | [`testmu-ai-example`](../../tree/testmu-ai-example) | Run tests on LambdaTest real devices with automatic tunnel management |
 | **BrowserStack** | [`browserstack-example`](../../tree/browserstack-example) | Run tests on BrowserStack real devices using BrowserStackLocal tunnel |
 | **BrowserStack + App Percy** | [`browserstack-app-percy-example`](../../tree/browserstack-app-percy-example) | BrowserStack with visual regression testing via App Percy |
 | **BrowserStack WebGL** | [`browserstack_webGL`](../../tree/browserstack_webGL) | Run WebGL build tests on BrowserStack |
 | **Sauce Labs** | [`saucelabs_example`](../../tree/saucelabs_example) | Run tests on Sauce Labs real devices |
+| **TestMu AI (LambdaTest)** | [`testmu-ai-example`](../../tree/testmu-ai-example) | Run tests on LambdaTest real devices with automatic tunnel management |
 
 ## How It Works
 
 ```
-┌──────────────┐       Secure Tunnel        ┌──────────────────────┐
+┌──────────────┐       Secure Tunnel         ┌──────────────────────┐
 │  Your Machine│◄──────────────────────────► │  Cloud Provider      │
 │              │                             │                      │
 │  NUnit Tests │   Appium (launch/manage)    │  Real Device         │

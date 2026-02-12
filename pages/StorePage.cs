@@ -7,6 +7,7 @@ namespace alttrashcat_tests_csharp.pages
         }
         public void LoadScene()
         {
+            Log("Store: Loading scene");
             Driver.LoadScene("Shop");
         }
         public AltObject CloseButton { get => Driver.WaitForObject(By.PATH, "/Canvas/Background/Button"); }
@@ -25,6 +26,7 @@ namespace alttrashcat_tests_csharp.pages
         public List<AltObject> ItemCount {get => Driver.FindObjectsWhichContain(By.PATH, "/Canvas/Background/ItemsList/Container/ItemEntry(Clone)/Icon/Count");}
         public bool StoreIsDisplayed()
         {
+            Log("Store: Checking if displayed");
             if (StoreTitleMoneyButton != null && CloseButton != null && ItemsTab != null && CharactersTab != null && AccessoriesTab != null && ThemesTab != null && BuyButton != null && PremiumPlusButton != null && CoinImage != null && PremiumCoinImage != null)
                 return true;
             return false;
@@ -45,6 +47,7 @@ namespace alttrashcat_tests_csharp.pages
         /// </summary>
         public void Buy(string tabName, int index)
         {
+            Log($"Store: Buying item {index} from {tabName}");
             GetObjectsBuyButton(tabName, index).Tap();
         }
         /// <summary>
@@ -52,6 +55,7 @@ namespace alttrashcat_tests_csharp.pages
         /// </summary>
         public void BuyAllFromTab(string tabName)
         {
+            Log($"Store: Buying all from {tabName}");
             int index = 0;
             bool goOn = true;
             while (goOn == true)
@@ -83,6 +87,7 @@ namespace alttrashcat_tests_csharp.pages
         /// </summary>
         public void GoToTab(string tabName)
         {
+            Log($"Store: Going to tab {tabName}");
             Driver.WaitForObject(By.NAME, tabName, timeout: 5).Tap();
         }
         /// <summary>
@@ -104,14 +109,17 @@ namespace alttrashcat_tests_csharp.pages
         }
         public void ReloadItems()
         {
+            Log("Store: Reloading items");
             ItemsTab.Tap();
         }
         public void CloseStore()
         {
+            Log("Store: Closing store");
             CloseButton.Tap();
         }
         public void GetMoreMoney()
         {
+            Log("Store: Getting more money");
             StoreTitleMoneyButton.Click();
         }
         /// <summary>
@@ -148,7 +156,7 @@ namespace alttrashcat_tests_csharp.pages
         /// </summary>
         public string ChangeItemName(string tabName, int index, string newName)
         {
-
+            Log($"Store: Changing item {index} name to {newName}");
             const string propertyName = "text";
             AltObject NewObject = GetNameObjectByIndexInPage(tabName, index);
             NewObject.SetText(newName, true);

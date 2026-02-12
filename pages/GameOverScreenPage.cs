@@ -11,6 +11,7 @@ namespace alttrashcat_tests_csharp.pages
 
         public bool IsDisplayed()
         {
+            Log("GameOverScreen: Checking if displayed");
             if (MainMenuButton != null && RunButton != null && GameOverText != null && HighscoreName != null)
                 return true;
             return false;

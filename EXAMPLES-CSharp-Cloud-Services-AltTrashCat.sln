@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAlttrashCSharp", "TestAlttrashCSharp.csproj", "{4A2E88FE-F1C4-F566-82A1-77FEDBC4671D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A2E88FE-F1C4-F566-82A1-77FEDBC4671D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A2E88FE-F1C4-F566-82A1-77FEDBC4671D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A2E88FE-F1C4-F566-82A1-77FEDBC4671D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A2E88FE-F1C4-F566-82A1-77FEDBC4671D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C9A594C-7619-4BC7-9977-275FA80DC3A8}
+	EndGlobalSection
+EndGlobal

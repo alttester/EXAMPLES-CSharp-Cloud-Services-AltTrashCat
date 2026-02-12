@@ -10,16 +10,19 @@ namespace alttrashcat_tests_csharp.pages
         public AltObject Title { get => Driver.WaitForObject(By.NAME, "Text", timeout: 2); }
         public bool IsDisplayed()
         {
+            Log("PauseOverlay: Checking if displayed");
             if (ResumeButton != null && MainMenuButton != null && Title != null)
                 return true;
             return false;
         }
         public void PressResume()
         {
+            Log("PauseOverlay: Pressing Resume");
             ResumeButton.Tap();
         }
         public void PressMainMenu()
         {
+            Log("PauseOverlay: Pressing Main Menu");
             MainMenuButton.Tap();
         }
     }

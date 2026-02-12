@@ -11,16 +11,19 @@ namespace alttrashcat_tests_csharp.pages
         public bool GetAnotherChangeObjectState { get => PremiumButton.GetComponentProperty<bool>("UnityEngine.UI.Button", "interactable", "UnityEngine.UI"); }
         public bool IsDisplayed()
         {
+            Log("GetAnotherChance: Checking if displayed");
             if (GameOverButton != null && PremiumButton != null && AvailableCurrency != null)
                 return true;
             return false;
         }
         public void PressGameOver()
         {
+            Log("GetAnotherChance: Pressing Game Over");
             GameOverButton.Tap();
         }
         public void PressPremiumButton()
         {
+            Log("GetAnotherChance: Pressing Premium button");
             PremiumButton.Tap();
         }
         public AltObject GetAnotherChanceButton()

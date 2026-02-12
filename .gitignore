@@ -17,3 +17,6 @@ Apps
 test-screenshot.png
 
 *.bat
+
+#ignore env file
+.env

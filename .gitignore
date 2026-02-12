@@ -1,19 +1,17 @@
-# ignore bin directory 
-bin/
-
-#ignore vscode 
-.vscode/
-
-#ignore obj
-obj/
-
-#ignore Test Results 
-TestResults/
-
-#ignore Apps
-Apps
-
-#ignore screenshots
-test-screenshot.png
-
-*.bat
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+env/
+.env
+*.png
+*.jpg
+results/
+.pytest_cache/
+htmlcov/
+.coverage

@@ -1,83 +1,109 @@
-This is an example repository for running tests using `AltTester® Unity SDK 2.2.5` and BrowserStack App Automate. 
+# AltTester TrashCat Tests - Python + LambdaTest
 
-## Executing tests using `AltTester® Unity SDK 2.2.5` (without BrowserStack).
-### Prerequisite
+Automated tests for the TrashCat Unity game using [AltTester SDK](https://alttester.com/alttester/) and [LambdaTest](https://www.lambdatest.com/) real device cloud.
 
-1. Download and install [.NET SDK](https://dotnet.microsoft.com/en-us/download)
-2. Have a build instrumented with AltTester® Unity SDK 2.2.5 - for additional information you can follow [this tutorial](https://alttester.com/walkthrough-tutorial-upgrading-trashcat-to-2-0-x/#Instrument%20TrashCat%20with%20AltTester%20Unity%20SDK%20v.2.0.x)
-3. Have [AltTester® Desktop app, 2.2.4](https://alttester.com/downloads/) installed (to be able to inspect game).
-- For SDK v2.2.5 => need to use AltTester® Desktop 2.2.4
-4. Add AltTester package:
-```
-dotnet add package AltTester-Driver --version 2.2.5
-```
+## Prerequisites
 
-#### Specific for running on Android from Windows
-5. Download and install [ADB for Windows](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
-6. Enable Developers Options on mobile device [more instructions here](https://www.xda-developers.com/install-adb-windows-macos-linux/)
+- Python 3.9+
+- [LambdaTest](https://www.lambdatest.com/) account
+- [LambdaTest Tunnel (LT)](https://www.lambdatest.com/support/docs/testing-locally-hosted-pages/) binary installed and available in PATH
+- A TrashCat `.apk` (or `.ipa`) uploaded to LambdaTest App Automation
 
-# Setup for running on mobile device
-Instrument the Android `TrashCat` application using the latest version of AltTester® Unity SDK - for additional information you can follow [this tutorial](https://alttester.com/walkthrough-tutorial-upgrading-trashcat-to-2-0-x/#Instrument%20TrashCat%20with%20AltTester%20Unity%20SDK%20v.2.0.x)
+## Setup
 
-1. Make sure mobile device is connected via USB, execute:
+1. **Clone the repository:**
+   ```bash
+   git clone <repo-url> -b lambdatest-python-example
+   cd EXAMPLES-CSharp-Cloud-Services-AltTrashCat
+   ```
 
-```
-adb devices
-```
+2. **Create a virtual environment and install dependencies:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # or venv\Scripts\activate on Windows
+   pip install -r requirements.txt
+   ```
 
-2. On mobile device: allow USB Debugging access (RSA key fingerprint from computer)
+3. **Configure environment variables:**
 
-3. Uninstall the app from the device
+   Copy `.env` and fill in your LambdaTest credentials:
+   ```bash
+   cp .env .env.local
+   ```
 
-```
-adb uninstall com.Altom.TrashCat
-```
+   Edit `.env` with your values:
+   ```
+   LT_USERNAME=your_lambdatest_username
+   LT_ACCESS_KEY=your_lambdatest_access_key
+   LT_APP_URL=lt://your_app_url
+   ```
 
-4. Install the app on the device
+## Running Tests
 
-```
-adb install TrashCat.apk
-```
-
-# Run tests manually (with [dotnet CLI](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test))
-! **Make sure to have the AltTester® Desktop App running**
-
-1. [Optional to do manually] Setup ADB reverse port forwarding (this can also be done in code in Setup and Teardown)
-
-```
-adb reverse remove tcp:13000
+Run all tests:
+```bash
+pytest
 ```
 
-```
-adb reverse tcp:13000 tcp:13000
-```
-
-2. Launch game
-
-```
-adb shell am start -n com.Altom.TrashCat/com.unity3d.player.UnityPlayerActivity
+Run a specific test file:
+```bash
+pytest tests/test_start_page.py -v
 ```
 
-3. Execute all tests:
-
-```
-dotnet test
-```
-
-4. Kill app
-```
-adb shell am force-stop com.Altom.TrashCat
+Run a specific test:
+```bash
+pytest tests/test_main_menu.py::TestMainMenu::test_main_menu_page_loaded_correctly -v
 ```
 
-
-### Run all tests from a specific class / file
-
-```
-dotnet test --filter <test_class_name>
-```
-
-### Run only one test from a class
+## Project Structure
 
 ```
-dotnet test --filter <test_class_name>.<test_name>
+├── pages/                    # Page Object Model
+│   ├── base_page.py          # Base class with annotation support
+│   ├── start_page.py         # Start screen page object
+│   ├── main_menu_page.py     # Main menu page object
+│   ├── game_play_page.py     # Gameplay page object (obstacle avoidance, etc.)
+│   ├── pause_overlay_page.py # Pause overlay page object
+│   ├── get_another_chance_page.py  # Revive screen page object
+│   ├── settings_page.py      # Settings popup page object
+│   ├── store_page.py         # Store/shop page object
+│   └── game_over_screen_page.py    # Game over screen page object
+├── tests/                    # Test suites
+│   ├── conftest.py           # Pytest fixtures (LambdaTest tunnel, Appium, AltDriver)
+│   ├── test_start_page.py    # Start page tests
+│   ├── test_main_menu.py     # Main menu tests
+│   ├── test_game_play.py     # Gameplay tests
+│   ├── test_store.py         # Store tests
+│   └── test_user_journey.py  # End-to-end user journey tests
+├── requirements.txt
+├── pytest.ini
+├── .env                      # Environment variable template
+└── .github/workflows/        # CI/CD
+    └── lambdatest-python.yml
+```
+
+## How It Works
+
+1. **LambdaTest Tunnel**: The `conftest.py` session fixture starts the `LT` tunnel binary, which creates a secure connection between the local machine and LambdaTest cloud devices. This allows the AltDriver to communicate with the AltTester Server running inside the app on the device.
+
+2. **Appium + LambdaTest**: An Appium remote session is created on LambdaTest's hub. The TrashCat app is installed and launched on a real device.
+
+3. **AltDriver**: After the app starts (30s wait), the AltDriver connects to the AltTester Server via the tunnel and enables test automation through the AltTester protocol.
+
+4. **Annotations**: Test steps are reported to LambdaTest's dashboard via `lambdatest_executor` JavaScript execution, providing visibility into what each test is doing.
+
+## Device Configuration
+
+By default, tests run on **Pixel 8 (Android 14)**. To change the device, modify the capabilities in `tests/conftest.py`:
+
+```python
+# Android
+options.set_capability("deviceName", "Pixel 8")
+options.set_capability("platformVersion", "14")
+options.set_capability("platformName", "android")
+
+# iOS (uncomment and adjust)
+# options.set_capability("deviceName", "iPhone 14")
+# options.set_capability("platformVersion", "16")
+# options.set_capability("platformName", "ios")
 ```

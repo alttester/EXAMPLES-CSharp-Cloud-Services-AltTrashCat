@@ -1,0 +1,4 @@
+alttester-driver==2.2.5
+pytest>=8.0.0
+Appium-Python-Client>=4.0.0
+python-dotenv>=1.0.0

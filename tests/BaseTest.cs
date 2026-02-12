@@ -1,72 +1,159 @@
-using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.iOS;
+using OpenQA.Selenium;
+using System.Diagnostics;
+using System.Net.Http;
 
 namespace alttrashcat_tests_csharp.tests
 {
     public class BaseTest
     {
         public AltDriver altDriver;
-        // IOSDriver<IOSElement> appiumDriver;
         AndroidDriver<AndroidElement> appiumDriver;
+        // IOSDriver<IOSElement> appiumDriver;
+        private static Process tunnelProcess;
+        private const int TunnelApiPort = 8032;
+        private const string TunnelName = "alttester-tunnel";
 
         [OneTimeSetUp]
-        public void SetupAppiumAndAltDriver()
+        public void SetupAppium()
         {
-            String SAUCE_USERNAME = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
-            String SAUCE_ACCESS_KEY = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
-            AppiumOptions options = new AppiumOptions();
-            options.AddAdditionalCapability("platformName", "Android");
-            // options.AddAdditionalCapability("platformName", "iOS");
-            options.AddAdditionalCapability("appium:app", "storage:filename=TrashCat.apk");
-            // options.AddAdditionalCapability("appium:app", "storage:filename=<builName.ipa>");
-            options.AddAdditionalCapability("appium:deviceName", "Samsung Galaxy S10 WQHD GoogleAPI Emulator");
-            // options.AddAdditionalCapability("appium:deviceName", "iPhone XR");
-            options.AddAdditionalCapability("appium:newCommandTimeout", 2000);
+            string SAUCE_USERNAME = Environment.GetEnvironmentVariable("SAUCE_USERNAME");
+            string SAUCE_ACCESS_KEY = Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY");
+            string SAUCE_APP_URL = Environment.GetEnvironmentVariable("SAUCE_APP_URL");
+            string SAUCE_REGION = Environment.GetEnvironmentVariable("SAUCE_REGION") ?? "eu-central-1";
 
-            options.AddAdditionalCapability("appium:platformVersion", "11.0");
-            // options.AddAdditionalCapability("appium:platformVersion", "16");
+            StartTunnel(SAUCE_USERNAME, SAUCE_ACCESS_KEY, SAUCE_REGION);
 
-            options.AddAdditionalCapability("appium:deviceOrientation", "portrait");
-            options.AddAdditionalCapability("appium:automationName", "UiAutomator2");
-            // options.AddAdditionalCapability("appium:automationName", "XCUITest");
+            AppiumOptions capabilities = new AppiumOptions();
+            capabilities.AddAdditionalCapability("platformName", "Android");
+            // capabilities.AddAdditionalCapability("platformName", "iOS");
+            capabilities.AddAdditionalCapability("appium:app", SAUCE_APP_URL);
+            capabilities.AddAdditionalCapability("appium:deviceName", "Samsung.*");
+            capabilities.AddAdditionalCapability("appium:platformVersion", "");
+            // capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 14");
+            // capabilities.AddAdditionalCapability("appium:platformVersion", "16");
+            capabilities.AddAdditionalCapability("appium:deviceOrientation", "portrait");
+            capabilities.AddAdditionalCapability("appium:automationName", "UiAutomator2");
+            // capabilities.AddAdditionalCapability("appium:automationName", "XCUITest");
+            capabilities.AddAdditionalCapability("appium:newCommandTimeout", 2000);
+            capabilities.AddAdditionalCapability("appium:autoGrantPermissions", true);
 
             var sauceOptions = new Dictionary<string, object>();
-            sauceOptions.Add("appiumVersion", "2.0.0");
             sauceOptions.Add("username", SAUCE_USERNAME);
             sauceOptions.Add("accessKey", SAUCE_ACCESS_KEY);
-            sauceOptions.Add("build", "TrashCat_build");
-            sauceOptions.Add("name", "Test " + DateTime.Now.ToString("dd.MM - HH:mm"));
-            options.AddAdditionalCapability("sauce:options", sauceOptions);
-            Console.WriteLine("WebDriver request initiated. Waiting for response, this typically takes 2-3 mins");
-            // appiumDriver = new IOSDriver<IOSElement>(new Uri("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"), options);
-            appiumDriver = new AndroidDriver<AndroidElement>(new Uri("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"), options);
+            sauceOptions.Add("build", "TrashCat");
+            sauceOptions.Add("name", "tests - " + DateTime.Now.ToString("MMMM dd - HH:mm"));
+            sauceOptions.Add("tunnelIdentifier", TunnelName);
+            sauceOptions.Add("tunnelOwner", SAUCE_USERNAME);
+            sauceOptions.Add("appiumVersion", "latest");
+            capabilities.AddAdditionalCapability("sauce:options", sauceOptions);
 
+            string hubUrl = $"https://ondemand.{SAUCE_REGION}.saucelabs.com:443/wd/hub";
+            Console.WriteLine($"Connecting to Sauce Labs at {hubUrl}");
+            appiumDriver = new AndroidDriver<AndroidElement>(new Uri(hubUrl), capabilities);
+            // appiumDriver = new IOSDriver<IOSElement>(new Uri(hubUrl), capabilities);
+
+            Annotate("Waiting for app to start...");
             Thread.Sleep(30000);
             Console.WriteLine("Appium driver started");
-            
-            String HOST_ALT_SERVER = Environment.GetEnvironmentVariable("HOST_ALT_SERVER");
-            altDriver = new AltDriver(HOST_ALT_SERVER, connectTimeout: 3000);
+            Annotate("Connecting AltDriver to AltTester Server...");
+            altDriver = new AltDriver();
+            Annotate("AltDriver connected");
             Console.WriteLine("AltDriver started");
+            alttrashcat_tests_csharp.pages.BasePage.AnnotateCallback = Annotate;
 
-            // IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow")); 
-            // ll.Click(); 
+            // IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow")); //iOS
+            // ll.Click(); //iOS
+        }
+
+        public void Annotate(string message, string level = "info")
+        {
+            var escaped = message.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            ((IJavaScriptExecutor)appiumDriver).ExecuteScript($"sauce:context={escaped}");
+        }
+
+        private void StartTunnel(string user, string accessKey, string region)
+        {
+            Console.WriteLine("Starting Sauce Connect tunnel...");
+            tunnelProcess = new Process();
+            tunnelProcess.StartInfo.FileName = "sc";
+            tunnelProcess.StartInfo.Arguments = $"run --username {user} --access-key {accessKey} --region {region} --tunnel-name {TunnelName} --api-address :{TunnelApiPort} --proxy-localhost allow";
+            tunnelProcess.StartInfo.UseShellExecute = false;
+            tunnelProcess.StartInfo.RedirectStandardOutput = true;
+            tunnelProcess.StartInfo.RedirectStandardError = true;
+            tunnelProcess.Start();
+
+            WaitForTunnelReady();
+            Console.WriteLine("Sauce Connect tunnel is running");
+        }
+
+        private void WaitForTunnelReady(int timeoutSeconds = 90)
+        {
+            using var client = new HttpClient();
+            var deadline = DateTime.UtcNow.AddSeconds(timeoutSeconds);
+
+            while (DateTime.UtcNow < deadline)
+            {
+                try
+                {
+                    var response = client.GetAsync($"http://127.0.0.1:{TunnelApiPort}/readyz").Result;
+                    if (response.IsSuccessStatusCode)
+                        return;
+                }
+                catch { }
+                Thread.Sleep(2000);
+            }
+            throw new Exception("Sauce Connect tunnel did not start within timeout");
+        }
+
+        private void StopTunnel()
+        {
+            if (tunnelProcess != null && !tunnelProcess.HasExited)
+            {
+                Console.WriteLine("Stopping Sauce Connect tunnel...");
+                tunnelProcess.Kill();
+                tunnelProcess.WaitForExit(10000);
+                tunnelProcess.Dispose();
+                tunnelProcess = null;
+                Console.WriteLine("Sauce Connect tunnel stopped");
+            }
+        }
+
+        [SetUp]
+        public void TestSetUp()
+        {
+            Annotate($"Starting test: {TestContext.CurrentContext.Test.Name}");
         }
 
         [TearDown]
         public void KeepAppiumAlive()
         {
-            appiumDriver.GetDisplayDensity();
-            // appiumDriver.GetClipboardText();
+            var testResult = TestContext.CurrentContext.Result.Outcome.Status;
+            var level = testResult == NUnit.Framework.Interfaces.TestStatus.Passed ? "info" : "error";
+            Annotate($"Finished test: {TestContext.CurrentContext.Test.Name} - {testResult}", level);
+            appiumDriver.GetDisplayDensity(); //android
+            // appiumDriver.GetClipboardText(); //ios
         }
 
         [OneTimeTearDown]
-        public void DisposeAppiumAndAltDriver()
+        public void DisposeAppium()
         {
             Console.WriteLine("Ending");
+            try
+            {
+                var testResult = TestContext.CurrentContext.Result.Outcome.Status;
+                var status = testResult == NUnit.Framework.Interfaces.TestStatus.Passed ? "passed" : "failed";
+                ((IJavaScriptExecutor)appiumDriver).ExecuteScript("sauce:job-result=" + status);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error reporting test status: " + e.Message);
+            }
             appiumDriver.Quit();
             altDriver.Stop();
+            StopTunnel();
         }
     }
 }

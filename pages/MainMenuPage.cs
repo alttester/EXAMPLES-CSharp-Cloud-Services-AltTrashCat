@@ -7,6 +7,7 @@ namespace alttrashcat_tests_csharp.pages
         }
         public void LoadScene()
         {
+            Log("MainMenu: Loading scene");
             Driver.LoadScene("Main");
         }
         public AltObject CharacterName { get => Driver.WaitForObject(By.NAME, "CharName", timeout: 10); }
@@ -24,29 +25,35 @@ namespace alttrashcat_tests_csharp.pages
         public AltObject AltTesterLogo { get => Driver.WaitForObject(By.PATH, "/AltTesterPrefab/AltDialog/Icon", timeout: 10); }
         public bool IsDisplayed()
         {
+            Log("MainMenu: Checking if displayed");
             if (StoreButton != null && LeaderBoardButton != null && SettingsButton != null && MissionButton != null && RunButton != null && CharacterName != null && ThemeName != null && ThemeImage != null)
                 return true;
             return false;
         }
         public void SelectLeaderBoard()
         {
+            Log("MainMenu: Selecting leaderboard");
             LeaderBoardButton.Tap();
         }
         public void SetHighScoreName()
         {
+            Log("MainMenu: Setting high score name");
             Driver.WaitForObjectWhichContains(By.PATH, "/UICamera/Leaderboard/Background/Display/Score/Name", timeout: 10);
             LeaderboardHighScoreName.SetText("HighScore");
         }
         public void PressStore()
         {
+            Log("MainMenu: Pressing Store");
             StoreButton.Tap();
         }
         public void PressSettings()
         {
+            Log("MainMenu: Pressing Settings");
             SettingsButton.Tap();
         }
         public void PressRun()
         {
+            Log("MainMenu: Pressing Run");
             RunButton.Tap();
         }
         /// <summary>
@@ -55,6 +62,7 @@ namespace alttrashcat_tests_csharp.pages
         /// </summary>
         public void TapArrowButton(string section, string direction)
         {
+            Log($"MainMenu: Tapping {direction} arrow for {section}");
             string path = "/UICamera/Loadout";
             if (section == "character")
                 path += $"/CharZone/CharName/CharSelector/Button{direction}";
@@ -67,15 +75,18 @@ namespace alttrashcat_tests_csharp.pages
         }
         public void SelectRaccoonCharacter()
         {
+            Log("MainMenu: Selecting Raccoon character");
             while (GetCharacterName() != "Rubbish Raccoon")
                 TapArrowButton("character", "Right");
         }
         public void ChangeAccessory()
         {
+            Log("MainMenu: Changing accessory");
             AccessoriesSelectorDown.Tap();
         }
         public void SetResolution(string x, string y, string fullscreen)
         {
+            Log($"MainMenu: Setting resolution to {x}x{y}");
             Driver.CallStaticMethod<string>("UnityEngine.Screen", "SetResolution", "UnityEngine.CoreModule", new string[] { x, y, fullscreen }, new string[] { "System.Int32", "System.Int32", "System.Boolean" });
         }
         public string GetCharacterName()
@@ -84,6 +95,7 @@ namespace alttrashcat_tests_csharp.pages
         }
         public void MoveObject(AltObject obj, int xMoving = 20, int yMoving = 20)
         {
+            Log($"MainMenu: Moving object {obj.name}");
             AltVector2 initialPosition = obj.GetScreenPosition();
             int fingerId = Driver.BeginTouch(initialPosition);
             AltVector2 newPosition = new AltVector2(initialPosition.x - xMoving, initialPosition.y + yMoving);

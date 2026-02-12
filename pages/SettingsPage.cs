@@ -17,11 +17,13 @@ namespace alttrashcat_tests_csharp.pages
         }
         public void MoveSlider(string sliderName, int moveByNumber)
         {
+            Log($"Settings: Moving slider {sliderName} by {moveByNumber}");
             var sliderHandle = Driver.WaitForObject(By.PATH, "/UICamera/Loadout/SettingPopup/Background/" + sliderName + "/Handle Slide Area/Handle");
             Driver.Swipe(new AltVector2(sliderHandle.x, sliderHandle.y), new AltVector2(sliderHandle.x + moveByNumber, sliderHandle.y));
         }
         public void DeleteData()
         {
+            Log("Settings: Deleting data");
             SettingsButton.Tap();
             DeleteDataButton.Tap();
             ConfirmYesButton.Tap();

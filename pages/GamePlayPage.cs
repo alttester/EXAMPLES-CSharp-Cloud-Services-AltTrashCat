@@ -17,6 +17,7 @@ namespace alttrashcat_tests_csharp.pages
 
         public bool IsDisplayed()
         {
+            Log("GamePlay: Checking if displayed");
             if (PauseButton != null && Character != null)
             {
                 return true;
@@ -27,32 +28,39 @@ namespace alttrashcat_tests_csharp.pages
         // The following classes are used in order to replace the keystrokes that are not recongized on devices
         public void Jump(AltObject character)
         {
+            Log("GamePlay: Jump");
             character.CallComponentMethod<string>("CharacterInputController", "Jump", "Assembly-CSharp", new object[] { });
         }
         public void Slide(AltObject character)
         {
+            Log("GamePlay: Slide");
             character.CallComponentMethod<string>("CharacterInputController", "Slide", "Assembly-CSharp", new object[] { });
         }
         public void MoveRight(AltObject character)
         {
+            Log("GamePlay: Move right");
             character.CallComponentMethod<string>("CharacterInputController", "ChangeLane", "Assembly-CSharp", new string[] { "1" });
         }
         public void MoveLeft(AltObject character)
         {
+            Log("GamePlay: Move left");
             character.CallComponentMethod<string>("CharacterInputController", "ChangeLane", "Assembly-CSharp", new string[] { "-1" });
         }
-        // end of clasesses used to replace keystrokes 
+        // end of clasesses used to replace keystrokes
 
         public int GetCurrentLife()
         {
+            Log("GamePlay: Getting current life");
             return Character.GetComponentProperty<int>("CharacterInputController", "currentLife", "Assembly-CSharp");
         }
         public void ActivateInGamePowerUp()
         {
+            Log("GamePlay: Activating power-up");
             InGamePowerUp.Tap();
         }
         public void PressPause()
         {
+            Log("GamePlay: Pressing Pause");
             PauseButton.Tap();
         }
         ///<summary>
@@ -60,17 +68,20 @@ namespace alttrashcat_tests_csharp.pages
         ///</summary>
         public void SetCharacterInvincible(string state)
         {
+            Log($"GamePlay: Setting invincible to {state}");
             string[] parameters = new[] { state };
             CharacterSlot.CallComponentMethod<string>("CharacterCollider", "SetInvincibleExplicit", "Assembly-CSharp", parameters);
         }
         public bool CharacterIsMoving()
         {
+            Log("GamePlay: Checking if character is moving");
             AltVector3 characterInitialPosition = Character.GetWorldPosition();
             AvoidObstacles(3);
             return (characterInitialPosition.z != Character.UpdateObject().GetWorldPosition().z);
         }
         public void AvoidObstacles(int numberOfObstacles)
         {
+            Log($"GamePlay: Avoiding {numberOfObstacles} obstacles");
             var character = Character;
             bool movedLeft = false;
             bool movedRight = false;

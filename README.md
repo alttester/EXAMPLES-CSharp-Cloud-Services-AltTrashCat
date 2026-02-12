@@ -1,4 +1,13 @@
-This is an example repository for running tests using `AltTester® Unity SDK 2.2.5` and BrowserStack App Automate. 
+This is an example repository for running tests using `AltTester® Unity SDK 2.2.5` and BrowserStack App Automate.
+
+## Cloud Testing Examples
+
+| Branch | Cloud Provider | Language |
+|---|---|---|
+| [`browserstack-example`](../../tree/browserstack-example) | BrowserStack | C# |
+| [`saucelabs_example`](../../tree/saucelabs_example) | Sauce Labs | C# |
+| [`testmu-ai-example`](../../tree/testmu-ai-example) | LambdaTest | C# |
+| [`lambdatest-python-example`](../../tree/lambdatest-python-example) | LambdaTest | Python |
 
 ## Executing tests using `AltTester® Unity SDK 2.2.5` (without BrowserStack).
 ### Prerequisite

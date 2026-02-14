@@ -8,7 +8,8 @@ build/
 venv/
 .venv/
 env/
-.env
+.env*
+*.env
 *.png
 *.jpg
 results/

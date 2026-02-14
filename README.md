@@ -13,6 +13,7 @@ All examples use the [TrashCat](https://github.com/AltTester/TrashCat) sample ga
 | **BrowserStack WebGL** | [`browserstack_webGL`](../../tree/browserstack_webGL) | Run WebGL build tests on BrowserStack |
 | **Sauce Labs** | [`saucelabs_example`](../../tree/saucelabs_example) | Run tests on Sauce Labs real devices |
 | **TestMu AI (LambdaTest)** | [`testmu-ai-example`](../../tree/testmu-ai-example) | Run tests on LambdaTest real devices with automatic tunnel management |
+| **TestMu AI - Python** | [`testmu-ai-python-example`](../../tree/testmu-ai-python-example) | Python/pytest version of the TestMu AI example |
 
 ## How It Works
 

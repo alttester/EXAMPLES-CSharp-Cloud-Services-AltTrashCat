@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestMu AI Integration: Execute AltTester-based Tests (C# &amp; Python) | AltTester&reg;</title>
+    <style>
+        :root {
+            --green: #00A525;
+            --dark-green: #205147;
+            --dark-blue: #0E3C64;
+            --gray-200: #EEEDEF;
+            --gray-800: #333;
+            --code-bg: #EEEDEF;
+            --code-color: #008000;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Fira Sans', 'Segoe UI', Arial, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.7;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--dark-blue); }
+        h2 { font-size: 1.5rem; margin: 2.5rem 0 1rem; color: var(--dark-blue); border-bottom: 2px solid var(--gray-200); padding-bottom: 0.4rem; }
+        h3 { font-size: 1.2rem; margin: 2rem 0 0.8rem; color: var(--dark-green); }
+        h4 { font-size: 1.05rem; margin: 1.5rem 0 0.6rem; }
+        p { margin-bottom: 1rem; }
+        a { color: var(--green); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .meta { color: #757575; font-size: 0.9rem; margin-bottom: 2rem; }
+        .update-notice {
+            background: #fff8e1;
+            border-left: 4px solid #eddd4d;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        ul, ol { margin: 0 0 1rem 1.5rem; }
+        li { margin-bottom: 0.4rem; }
+        pre {
+            background: var(--code-bg);
+            padding: 1.2rem 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            color: var(--code-color);
+        }
+        pre code { color: var(--code-color); }
+        p code, li code {
+            background: var(--code-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+        }
+        .tab {
+            padding: 0.5rem 1.2rem;
+            background: var(--gray-200);
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .tab.active {
+            background: var(--code-bg);
+            border-bottom: 1px solid var(--code-bg);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-content pre { border-radius: 0 6px 6px 6px; margin-top: 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        th { background: var(--gray-200); font-weight: 600; }
+        .diagram {
+            background: var(--gray-200);
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre;
+        }
+        .toc {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .toc h3 { margin-top: 0; }
+        .toc ol { margin-bottom: 0; }
+        .tags { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; }
+        .tags span {
+            display: inline-block;
+            background: var(--gray-200);
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin: 0.2rem 0.3rem 0.2rem 0;
+        }
+        .closing {
+            background: #f0f8f0;
+            border-left: 4px solid var(--green);
+            padding: 1rem 1.2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<h1>TestMu AI Integration: Execute AltTester-based Tests in C# and Python</h1>
+<p class="meta">by AltTester&reg; Team &bull; 2025</p>
+
+<div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+        <li><a href="#what-is-testmu-ai">What is TestMu AI?</a></li>
+        <li><a href="#architecture">How does it work with AltTester?</a></li>
+        <li><a href="#context">Context about the tests for this example</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#setup-csharp">Setup &amp; configuration &mdash; C# (NUnit)</a></li>
+        <li><a href="#setup-python">Setup &amp; configuration &mdash; Python (pytest)</a></li>
+        <li><a href="#run-tests">Run the tests</a></li>
+    </ol>
+</div>
+
+<p>
+    Discover how you can run <strong>C# and Python tests</strong>, based on the
+    <strong>AltTester Unity SDK 2.2.5</strong>, on real devices in the
+    <strong>TestMu AI</strong> (formerly LambdaTest) cloud service. In this article
+    we walk through both language examples so you can choose the stack that fits
+    your team best.
+</p>
+
+<!-- ============================================================ -->
+<h2 id="what-is-testmu-ai">What is TestMu AI?</h2>
+
+<p>
+    <a href="https://www.lambdatest.com/">TestMu AI</a> (formerly known as
+    <strong>LambdaTest</strong>) is a cloud-based testing platform that provides
+    <strong>automated testing solutions</strong> for web and mobile applications.
+    It allows developers and QA teams to run tests across a wide range of
+    <strong>real browsers, operating systems and mobile devices</strong> without
+    maintaining physical hardware.
+</p>
+<p>
+    <em>Note: While the company has rebranded to TestMu AI, many of its tools,
+    APIs, environment variables and documentation still use the LambdaTest name
+    (e.g. the <code>LT</code> tunnel binary, <code>LT_USERNAME</code>,
+    <code>lambdatest_executor</code>, <code>mobile-hub.lambdatest.com</code>).
+    We use the original names when referring to these technical components
+    throughout this article.</em>
+</p>
+<p>
+    TestMu AI provides a built-in <strong>tunnel binary (<code>LT</code>)</strong>
+    that creates a secure connection between your local machine (or CI runner) and
+    the cloud devices, enabling communication over WebSockets &mdash; exactly what
+    AltTester needs.
+</p>
+
+<!-- ============================================================ -->
+<h2 id="architecture">How does it work with AltTester?</h2>
+
+<p>
+    When running AltTester-based tests on TestMu AI, three components work together:
+</p>
+
+<div class="diagram">
++---------------------+          LT Tunnel          +-------------------+
+|                     |  &lt;======================&gt;  |                   |
+|   Your Machine      |     (WebSocket over TCP)     |   TestMu AI       |
+|   or CI Runner      |                              |   Real Device     |
+|                     |                              |                   |
+|  +---------------+  |                              |  +-------------+  |
+|  | Test Runner   |  |                              |  | TrashCat    |  |
+|  | (NUnit/pytest)|  |                              |  | .apk/.ipa  |  |
+|  +-------+-------+  |                              |  +------+------+  |
+|          |           |                              |         |         |
+|  +-------v-------+  |                              |  +------v------+  |
+|  | AltDriver     +--+--------- port 13000 ---------+--+ AltTester   |  |
+|  | (C# or Python)|  |                              |  | Server (SDK)|  |
+|  +---------------+  |                              |  +-------------+  |
+|                     |                              |                   |
+|  +---------------+  |    Appium (HTTPS/443)        |  +-------------+  |
+|  | Appium Client +--+-----------------------------&gt;+--+ Appium      |  |
+|  +---------------+  |                              |  | Server      |  |
++---------------------+                              +-------------------+</div>
+
+<ol>
+    <li>The <strong>LT tunnel</strong> binary is started locally, creating a secure connection to TestMu AI's infrastructure.</li>
+    <li>An <strong>Appium session</strong> is created via TestMu AI's remote hub, which installs and launches the instrumented TrashCat build on a real device.</li>
+    <li>After the app starts, the <strong>AltDriver</strong> connects through the tunnel to the <strong>AltTester Server</strong> embedded in the game (port 13000).</li>
+    <li>Tests interact with the game via the AltDriver while <strong>annotations</strong> are reported to TestMu AI's dashboard via Appium's <code>execute_script</code>.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="context">Context about the tests for this example</h2>
+
+<p>
+    The example is based on the <strong>TrashCat</strong> endless runner game,
+    instrumented with AltTester Unity SDK 2.2.5. The test suite uses the
+    <strong>Page Object Model</strong> pattern with 9 page objects and 5 test
+    classes covering:
+</p>
+
+<ul>
+    <li>Start page navigation</li>
+    <li>Main menu functionality (leaderboard, settings, store access, resolution changes)</li>
+    <li>Gameplay (obstacle avoidance, pause/resume, power-ups, character customization)</li>
+    <li>Store (purchasing items, characters, accessories, themes)</li>
+    <li>End-to-end user journeys (play, buy, revive)</li>
+</ul>
+
+<p>
+    Both implementations are available in the same repository on separate branches:
+</p>
+
+<table>
+    <thead>
+        <tr><th>Branch</th><th>Language</th><th>Test Framework</th><th>Tests</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="https://github.com/alttester/EXAMPLES-CSharp-Cloud-Services-AltTrashCat/tree/testmu-ai-example"><code>testmu-ai-example</code></a></td>
+            <td>C#</td>
+            <td>NUnit</td>
+            <td>71</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/alttester/EXAMPLES-CSharp-Cloud-Services-AltTrashCat/tree/testmu-ai-python-example"><code>testmu-ai-python-example</code></a></td>
+            <td>Python</td>
+            <td>pytest</td>
+            <td>71</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ol>
+    <li>A <strong><a href="https://www.lambdatest.com/">TestMu AI</a> account</strong> (free trial available).</li>
+    <li>Install the <strong><a href="https://www.lambdatest.com/support/docs/testing-locally-hosted-pages/">TestMu AI Tunnel (<code>LT</code>) binary</a></strong> and ensure it is available in your <code>PATH</code>.</li>
+    <li>A <strong>TrashCat build</strong> (<code>.apk</code> or <code>.ipa</code>) instrumented with AltTester Unity SDK 2.2.5 and uploaded to TestMu AI App Automation.</li>
+    <li>
+        For <strong>C#</strong>: .NET SDK installed.<br>
+        For <strong>Python</strong>: Python 3.9+.
+    </li>
+</ol>
+
+<h3>Set your TestMu AI credentials as environment variables</h3>
+
+<p>
+    Find your credentials on the
+    <a href="https://accounts.lambdatest.com/detail/profile">TestMu AI profile page</a>.
+    Set them as environment variables:
+</p>
+
+<pre><code>export LT_USERNAME="yourUsername"
+export LT_ACCESS_KEY="yourAccessKey"
+export LT_APP_URL="lt://yourAppUrl"</code></pre>
+
+<h3>Upload your build to TestMu AI</h3>
+
+<p>
+    Navigate to <strong>App Automation &rarr; Upload App</strong> in the TestMu AI
+    dashboard and upload your instrumented <code>.apk</code> or <code>.ipa</code>.
+    TestMu AI will provide an <code>lt://APP...</code> URL that you'll use as
+    <code>LT_APP_URL</code>.
+</p>
+
+<!-- ============================================================ -->
+<h2 id="setup-csharp">Setup &amp; Configuration &mdash; C# (NUnit)</h2>
+
+<h3>1. Clone the repository</h3>
+<pre><code>git clone https://github.com/alttester/EXAMPLES-CSharp-Cloud-Services-AltTrashCat.git -b testmu-ai-example
+cd EXAMPLES-CSharp-Cloud-Services-AltTrashCat</code></pre>
+
+<h3>2. Install dependencies</h3>
+<pre><code>dotnet add package AltTester-Driver --version 2.2.5
+dotnet add package Appium.WebDriver --version 4.4.0</code></pre>
+
+<h3>3. Tunnel management</h3>
+
+<p>
+    The <code>BaseTest.cs</code> class automatically starts and stops the TestMu AI
+    tunnel. The tunnel is started with:
+</p>
+
+<pre><code>tunnelProcess.StartInfo.FileName = "LT";
+tunnelProcess.StartInfo.Arguments =
+    $"--user {user} --key {accessKey} --tunnelName {TunnelName} --infoAPIPort {TunnelInfoPort}";
+tunnelProcess.Start();</code></pre>
+
+<p>
+    It then polls <code>http://127.0.0.1:8000/api/v1.0/info</code> until the
+    tunnel is ready (up to 60 seconds).
+</p>
+
+<h3>4. Configure Appium capabilities</h3>
+
+<p>
+    TestMu AI capabilities are set directly as Appium additional capabilities
+    in the <code>BaseTest</code> class:
+</p>
+
+<h4>Android</h4>
+<pre><code>AppiumOptions capabilities = new AppiumOptions();
+capabilities.AddAdditionalCapability("user", LT_USERNAME);
+capabilities.AddAdditionalCapability("accessKey", LT_ACCESS_KEY);
+capabilities.AddAdditionalCapability("app", LT_APP_URL);
+capabilities.AddAdditionalCapability("deviceName", "Pixel 8");
+capabilities.AddAdditionalCapability("platformVersion", "14");
+capabilities.AddAdditionalCapability("platformName", "android");
+capabilities.AddAdditionalCapability("build", "TrashCat");
+capabilities.AddAdditionalCapability("name", "tests - " + DateTime.Now.ToString("MMMM dd - HH:mm"));
+capabilities.AddAdditionalCapability("isRealMobile", true);
+capabilities.AddAdditionalCapability("idleTimeout", 300);
+capabilities.AddAdditionalCapability("tunnel", true);
+capabilities.AddAdditionalCapability("tunnelName", TunnelName);
+
+appiumDriver = new AndroidDriver&lt;AndroidElement&gt;(
+    new Uri("https://mobile-hub.lambdatest.com:443/wd/hub"), capabilities);</code></pre>
+
+<h4>iOS (commented alternative)</h4>
+<pre><code>capabilities.AddAdditionalCapability("deviceName", "iPhone 14");
+capabilities.AddAdditionalCapability("platformVersion", "16");
+capabilities.AddAdditionalCapability("platformName", "ios");
+
+appiumDriver = new IOSDriver&lt;IOSElement&gt;(
+    new Uri("https://mobile-hub.lambdatest.com:443/wd/hub"), capabilities);</code></pre>
+
+<h3>5. Connect AltDriver</h3>
+
+<p>
+    After starting the Appium session, wait for the app to launch, then connect:
+</p>
+
+<pre><code>Thread.Sleep(30000);  // Wait for app to start
+altDriver = new AltDriver();</code></pre>
+
+<h3>6. TestMu AI annotations</h3>
+
+<p>
+    Test steps are reported to TestMu AI's dashboard using
+    <code>lambdatest_executor</code> via Appium's JavaScript execution. This
+    provides detailed visibility in the TestMu AI test timeline:
+</p>
+
+<pre><code>public void Annotate(string message, string level = "info")
+{
+    var escaped = message.Replace("\\", "\\\\").Replace("\"", "\\\"");
+    ((IJavaScriptExecutor)appiumDriver).ExecuteScript(
+        $"lambdatest_executor: {{\"action\": \"stepcontext\", " +
+        $"\"arguments\": {{\"data\": \"{escaped}\", \"level\": \"{level}\"}}}}");
+}</code></pre>
+
+<h3>7. Keep Appium alive</h3>
+
+<p>
+    TestMu AI has a configurable idle timeout (set to 300 seconds in this
+    example). To prevent the session from timing out during long-running tests,
+    an Appium command is issued after each test in the <code>[TearDown]</code>:
+</p>
+
+<pre><code>[TearDown]
+public void KeepAppiumAlive()
+{
+    appiumDriver.GetDisplayDensity();  // Android
+    // appiumDriver.GetClipboardText();  // iOS
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="setup-python">Setup &amp; Configuration &mdash; Python (pytest)</h2>
+
+<h3>1. Clone the repository</h3>
+<pre><code>git clone https://github.com/alttester/EXAMPLES-CSharp-Cloud-Services-AltTrashCat.git -b testmu-ai-python-example
+cd EXAMPLES-CSharp-Cloud-Services-AltTrashCat</code></pre>
+
+<h3>2. Create a virtual environment and install dependencies</h3>
+<pre><code>python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt</code></pre>
+
+<p>The <code>requirements.txt</code> includes:</p>
+<pre><code>alttester-driver==2.2.5
+pytest>=8.0.0
+Appium-Python-Client>=4.0.0
+python-dotenv>=1.0.0</code></pre>
+
+<h3>3. Tunnel management</h3>
+
+<p>
+    The Python version manages the tunnel via a <strong>session-scoped pytest fixture</strong>
+    in <code>conftest.py</code>. The tunnel starts before any test runs and stops
+    after all tests complete:
+</p>
+
+<pre><code>@pytest.fixture(scope="session")
+def lt_tunnel():
+    username = os.environ["LT_USERNAME"]
+    access_key = os.environ["LT_ACCESS_KEY"]
+    process = start_tunnel(username, access_key)
+    yield process
+    stop_tunnel(process)</code></pre>
+
+<p>
+    The <code>start_tunnel()</code> function launches the <code>LT</code> binary
+    and polls the info API at <code>http://127.0.0.1:8000/api/v1.0/info</code>
+    until it's ready:
+</p>
+
+<pre><code>def start_tunnel(username, access_key):
+    process = subprocess.Popen([
+        "LT",
+        "--user", username,
+        "--key", access_key,
+        "--tunnelName", TUNNEL_NAME,
+        "--infoAPIPort", str(TUNNEL_INFO_PORT),
+    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    wait_for_tunnel_ready()
+    return process</code></pre>
+
+<h3>4. Configure Appium capabilities</h3>
+
+<p>
+    The Python Appium client (Selenium 4+) uses the <code>lt:options</code>
+    capability namespace. Credentials are passed in the URL:
+</p>
+
+<pre><code>lt_options = {
+    "user": username,
+    "accessKey": access_key,
+    "app": app_url,
+    "deviceName": "Pixel 8",
+    "platformVersion": "14",
+    "platformName": "android",
+    "build": "TrashCat",
+    "name": f"tests - {datetime.now().strftime('%B %d - %H:%M')}",
+    "isRealMobile": True,
+    "idleTimeout": 300,
+    "tunnel": True,
+    "tunnelName": TUNNEL_NAME,
+}
+
+options = AppiumOptions()
+options.set_capability("lt:options", lt_options)
+options.set_capability("platformName", "android")
+
+appium_driver = appium_webdriver.Remote(
+    command_executor=f"https://{username}:{access_key}@mobile-hub.lambdatest.com/wd/hub",
+    options=options,
+)</code></pre>
+
+<h3>5. Connect AltDriver</h3>
+
+<pre><code>time.sleep(30)  # Wait for app to start
+alt_driver = AltDriver()</code></pre>
+
+<h3>6. TestMu AI annotations</h3>
+
+<p>
+    Annotations are sent via the same <code>lambdatest_executor</code> mechanism.
+    A static callback is wired into all page objects so every action is logged:
+</p>
+
+<pre><code>def annotate(appium_driver, message, level="info"):
+    escaped = message.replace("\\", "\\\\").replace('"', '\\"')
+    appium_driver.execute_script(
+        f'lambdatest_executor: {{"action": "stepcontext", '
+        f'"arguments": {{"data": "{escaped}", "level": "{level}"}}}}'
+    )
+
+# Wire into page objects
+BasePage.annotate_callback = lambda msg, lvl="info": annotate(appium_driver, msg, lvl)</code></pre>
+
+<h3>7. Keep Appium alive &amp; report status</h3>
+
+<p>
+    An <code>autouse</code> fixture annotates each test's start/end and keeps
+    the Appium session alive:
+</p>
+
+<pre><code>@pytest.fixture(autouse=True)
+def per_test_annotation(request, setup):
+    appium_driver = getattr(request.cls, "appium_driver", None)
+    test_name = request.node.name
+
+    if appium_driver:
+        annotate(appium_driver, f"Starting test: {test_name}")
+    yield
+    if appium_driver:
+        # Report result and keep alive
+        annotate(appium_driver, f"Finished test: {test_name} - {status}", level)
+        appium_driver.get_display_density()  # Android keep-alive</code></pre>
+
+<h3>Key differences: C# vs Python</h3>
+
+<table>
+    <thead>
+        <tr><th>Aspect</th><th>C# (NUnit)</th><th>Python (pytest)</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Setup/Teardown</td>
+            <td><code>[OneTimeSetUp]</code> / <code>[OneTimeTearDown]</code></td>
+            <td><code>@pytest.fixture(scope="class")</code> with <code>yield</code></td>
+        </tr>
+        <tr>
+            <td>Per-test hooks</td>
+            <td><code>[SetUp]</code> / <code>[TearDown]</code></td>
+            <td><code>@pytest.fixture(autouse=True)</code></td>
+        </tr>
+        <tr>
+            <td>Parametrized tests</td>
+            <td><code>[TestCase("val")]</code></td>
+            <td><code>@pytest.mark.parametrize</code></td>
+        </tr>
+        <tr>
+            <td>Assertions</td>
+            <td><code>Assert.True(x)</code></td>
+            <td><code>assert x</code></td>
+        </tr>
+        <tr>
+            <td>AltDriver API</td>
+            <td>PascalCase: <code>WaitForObject()</code></td>
+            <td>snake_case: <code>wait_for_object()</code></td>
+        </tr>
+        <tr>
+            <td>Capability format</td>
+            <td>Flat <code>AddAdditionalCapability</code></td>
+            <td><code>lt:options</code> namespace</td>
+        </tr>
+        <tr>
+            <td>Tunnel management</td>
+            <td>In <code>BaseTest</code> class</td>
+            <td>Session-scoped pytest fixture</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="run-tests">Run the tests</h2>
+
+<p>Before running the tests, make sure that:</p>
+<ul>
+    <li>TestMu AI credentials are <strong>set as environment variables</strong> (<code>LT_USERNAME</code>, <code>LT_ACCESS_KEY</code>, <code>LT_APP_URL</code>)</li>
+    <li>The <code>LT</code> tunnel binary is installed and available in your <code>PATH</code></li>
+    <li>Your instrumented build has been <strong>uploaded to TestMu AI</strong></li>
+</ul>
+
+<h3>C#</h3>
+<pre><code># Run all tests
+dotnet test
+
+# Run a specific test class
+dotnet test --filter StartPageTests
+
+# Run a single test
+dotnet test --filter StartPageTests.TestStartPageLoadedCorrectly</code></pre>
+
+<h3>Python</h3>
+<pre><code># Run all tests
+pytest
+
+# Run a specific test file
+pytest tests/test_start_page.py -v
+
+# Run a single test
+pytest tests/test_start_page.py::TestStartPage::test_start_page_loaded_correctly -v</code></pre>
+
+<p>
+    Test results, step annotations, and device recordings will be available in
+    the <strong>TestMu AI App Automation dashboard</strong>.
+</p>
+
+<!-- ============================================================ -->
+
+<div class="closing">
+    <p>
+        We hope that this article has helped you get started with running
+        AltTester-based tests on TestMu AI (formerly LambdaTest) &mdash; in both C# and Python.
+        You can find on <a href="https://alttester.com/blog/">our blog</a>
+        a series of articles about running AltTester tests with other cloud
+        services (e.g.
+        <a href="https://alttester.com/sauce-labs-integration-execute-alttester-based-c-tests/">Sauce Labs</a>,
+        BrowserStack).
+        If you have any questions, feel free to reach out to us on our
+        <a href="https://discord.gg/Ag9RSuS">Discord channel</a>.
+        Make sure to also explore our
+        <a href="https://alttester.com/docs/sdk/">documentation</a> for
+        more detailed information.
+    </p>
+</div>
+
+<div class="tags">
+    <strong>Tags:</strong>
+    <span>AltTester</span>
+    <span>Android</span>
+    <span>Appium</span>
+    <span>Client Side Testing</span>
+    <span>Cloud Service Integration</span>
+    <span>Game Testing</span>
+    <span>iOS</span>
+    <span>TestMu AI</span>
+    <span>LambdaTest</span>
+    <span>Mobile Automation</span>
+    <span>Python</span>
+    <span>C#</span>
+    <span>pytest</span>
+    <span>NUnit</span>
+    <span>Test Automation</span>
+    <span>TrashCat</span>
+    <span>Unity</span>
+</div>
+
+</body>
+</html>

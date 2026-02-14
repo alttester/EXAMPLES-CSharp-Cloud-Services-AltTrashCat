@@ -15,7 +15,7 @@ Automated tests for the TrashCat Unity game using [AltTester SDK](https://alttes
 
 1. **Clone the repository:**
    ```bash
-   git clone <repo-url> -b lambdatest-python-example
+   git clone <repo-url> -b testmu-ai-python-example
    cd EXAMPLES-CSharp-Cloud-Services-AltTrashCat
    ```
 

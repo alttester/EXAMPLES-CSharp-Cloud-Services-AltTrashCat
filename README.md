@@ -1,13 +1,15 @@
-# AltTester TrashCat Tests - Python + LambdaTest
+# AltTester TrashCat Tests - Python + TestMu AI
 
-Automated tests for the TrashCat Unity game using [AltTester SDK](https://alttester.com/alttester/) and [LambdaTest](https://www.lambdatest.com/) real device cloud.
+Automated tests for the TrashCat Unity game using [AltTester SDK](https://alttester.com/alttester/) and [TestMu AI](https://www.lambdatest.com/) (formerly LambdaTest) real device cloud.
+
+> **Note:** TestMu AI was previously known as LambdaTest. The platform's tools, APIs, and environment variables still use the LambdaTest naming (e.g. the `LT` tunnel binary, `LT_USERNAME`, `lambdatest_executor`, `mobile-hub.lambdatest.com`).
 
 ## Prerequisites
 
 - Python 3.9+
-- [LambdaTest](https://www.lambdatest.com/) account
-- [LambdaTest Tunnel (LT)](https://www.lambdatest.com/support/docs/testing-locally-hosted-pages/) binary installed and available in PATH
-- A TrashCat `.apk` (or `.ipa`) uploaded to LambdaTest App Automation
+- [TestMu AI](https://www.lambdatest.com/) account
+- [TestMu AI Tunnel (LT)](https://www.lambdatest.com/support/docs/testing-locally-hosted-pages/) binary installed and available in PATH
+- A TrashCat `.apk` (or `.ipa`) uploaded to TestMu AI App Automation
 
 ## Setup
 
@@ -26,15 +28,15 @@ Automated tests for the TrashCat Unity game using [AltTester SDK](https://alttes
 
 3. **Configure environment variables:**
 
-   Copy `.env` and fill in your LambdaTest credentials:
+   Copy `.env` and fill in your TestMu AI credentials:
    ```bash
    cp .env .env.local
    ```
 
    Edit `.env` with your values:
    ```
-   LT_USERNAME=your_lambdatest_username
-   LT_ACCESS_KEY=your_lambdatest_access_key
+   LT_USERNAME=your_testmu_ai_username
+   LT_ACCESS_KEY=your_testmu_ai_access_key
    LT_APP_URL=lt://your_app_url
    ```
 
@@ -69,7 +71,7 @@ pytest tests/test_main_menu.py::TestMainMenu::test_main_menu_page_loaded_correct
 │   ├── store_page.py         # Store/shop page object
 │   └── game_over_screen_page.py    # Game over screen page object
 ├── tests/                    # Test suites
-│   ├── conftest.py           # Pytest fixtures (LambdaTest tunnel, Appium, AltDriver)
+│   ├── conftest.py           # Pytest fixtures (TestMu AI tunnel, Appium, AltDriver)
 │   ├── test_start_page.py    # Start page tests
 │   ├── test_main_menu.py     # Main menu tests
 │   ├── test_game_play.py     # Gameplay tests
@@ -77,20 +79,18 @@ pytest tests/test_main_menu.py::TestMainMenu::test_main_menu_page_loaded_correct
 │   └── test_user_journey.py  # End-to-end user journey tests
 ├── requirements.txt
 ├── pytest.ini
-├── .env                      # Environment variable template
-└── .github/workflows/        # CI/CD
-    └── lambdatest-python.yml
+└── .env                      # Environment variable template
 ```
 
 ## How It Works
 
-1. **LambdaTest Tunnel**: The `conftest.py` session fixture starts the `LT` tunnel binary, which creates a secure connection between the local machine and LambdaTest cloud devices. This allows the AltDriver to communicate with the AltTester Server running inside the app on the device.
+1. **TestMu AI Tunnel**: The `conftest.py` session fixture starts the `LT` tunnel binary, which creates a secure connection between the local machine and TestMu AI cloud devices. This allows the AltDriver to communicate with the AltTester Server running inside the app on the device.
 
-2. **Appium + LambdaTest**: An Appium remote session is created on LambdaTest's hub. The TrashCat app is installed and launched on a real device.
+2. **Appium + TestMu AI**: An Appium remote session is created on TestMu AI's hub. The TrashCat app is installed and launched on a real device.
 
 3. **AltDriver**: After the app starts (30s wait), the AltDriver connects to the AltTester Server via the tunnel and enables test automation through the AltTester protocol.
 
-4. **Annotations**: Test steps are reported to LambdaTest's dashboard via `lambdatest_executor` JavaScript execution, providing visibility into what each test is doing.
+4. **Annotations**: Test steps are reported to TestMu AI's dashboard via `lambdatest_executor` JavaScript execution, providing visibility into what each test is doing.
 
 ## Device Configuration
 

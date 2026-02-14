@@ -21,8 +21,8 @@ TUNNEL_NAME = "AltTester"
 
 
 def start_tunnel(username, access_key):
-    """Start the LambdaTest tunnel binary."""
-    print("Starting LambdaTest tunnel...")
+    """Start the TestMu AI (formerly LambdaTest) tunnel binary."""
+    print("Starting TestMu AI tunnel...")
     process = subprocess.Popen(
         [
             "LT",
@@ -35,7 +35,7 @@ def start_tunnel(username, access_key):
         stderr=subprocess.PIPE,
     )
     wait_for_tunnel_ready()
-    print("LambdaTest tunnel is running")
+    print("TestMu AI tunnel is running")
     return process
 
 
@@ -53,20 +53,20 @@ def wait_for_tunnel_ready(timeout_seconds=60):
         except (URLError, OSError):
             pass
         time.sleep(2)
-    raise RuntimeError("LambdaTest tunnel did not start within timeout")
+    raise RuntimeError("TestMu AI tunnel did not start within timeout")
 
 
 def stop_tunnel(process):
-    """Stop the LambdaTest tunnel process."""
+    """Stop the TestMu AI tunnel process."""
     if process and process.poll() is None:
-        print("Stopping LambdaTest tunnel...")
+        print("Stopping TestMu AI tunnel...")
         process.kill()
         process.wait(timeout=10)
-        print("LambdaTest tunnel stopped")
+        print("TestMu AI tunnel stopped")
 
 
 def annotate(appium_driver, message, level="info"):
-    """Send a step-context annotation to LambdaTest."""
+    """Send a step-context annotation to TestMu AI via lambdatest_executor."""
     escaped = message.replace("\\", "\\\\").replace('"', '\\"')
     appium_driver.execute_script(
         f'lambdatest_executor: {{"action": "stepcontext", '
@@ -76,7 +76,7 @@ def annotate(appium_driver, message, level="info"):
 
 @pytest.fixture(scope="session")
 def lt_tunnel():
-    """Session-scoped fixture: start/stop LambdaTest tunnel."""
+    """Session-scoped fixture: start/stop TestMu AI tunnel."""
     username = os.environ["LT_USERNAME"]
     access_key = os.environ["LT_ACCESS_KEY"]
     process = start_tunnel(username, access_key)

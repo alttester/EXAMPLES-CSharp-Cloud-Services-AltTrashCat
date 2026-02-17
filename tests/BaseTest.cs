@@ -10,8 +10,8 @@ namespace alttrashcat_tests_csharp.tests
     public class BaseTest
     {
         public AltDriver altDriver;
-        AndroidDriver<AndroidElement> appiumDriver;
-        // IOSDriver<IOSElement> appiumDriver;
+        // AndroidDriver<AndroidElement> appiumDriver;
+        IOSDriver<IOSElement> appiumDriver;
         private static Process tunnelProcess;
         private const int TunnelApiPort = 8032;
         private const string TunnelName = "alttester-tunnel";
@@ -27,16 +27,16 @@ namespace alttrashcat_tests_csharp.tests
             StartTunnel(SAUCE_USERNAME, SAUCE_ACCESS_KEY, SAUCE_REGION);
 
             AppiumOptions capabilities = new AppiumOptions();
-            capabilities.AddAdditionalCapability("platformName", "Android");
-            // capabilities.AddAdditionalCapability("platformName", "iOS");
+            // capabilities.AddAdditionalCapability("platformName", "Android");
+            capabilities.AddAdditionalCapability("platformName", "iOS");
             capabilities.AddAdditionalCapability("appium:app", SAUCE_APP_URL);
-            capabilities.AddAdditionalCapability("appium:deviceName", "Samsung.*");
-            capabilities.AddAdditionalCapability("appium:platformVersion", "");
-            // capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 14");
-            // capabilities.AddAdditionalCapability("appium:platformVersion", "16");
+            // capabilities.AddAdditionalCapability("appium:deviceName", "Samsung.*");
+            // capabilities.AddAdditionalCapability("appium:platformVersion", "");
+            capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 1[5-9].*");
+            capabilities.AddAdditionalCapability("appium:platformVersion", "18");
             capabilities.AddAdditionalCapability("appium:deviceOrientation", "portrait");
-            capabilities.AddAdditionalCapability("appium:automationName", "UiAutomator2");
-            // capabilities.AddAdditionalCapability("appium:automationName", "XCUITest");
+            // capabilities.AddAdditionalCapability("appium:automationName", "UiAutomator2");
+            capabilities.AddAdditionalCapability("appium:automationName", "XCUITest");
             capabilities.AddAdditionalCapability("appium:newCommandTimeout", 2000);
             capabilities.AddAdditionalCapability("appium:autoGrantPermissions", true);
 
@@ -52,11 +52,20 @@ namespace alttrashcat_tests_csharp.tests
 
             string hubUrl = $"https://ondemand.{SAUCE_REGION}.saucelabs.com:443/wd/hub";
             Console.WriteLine($"Connecting to Sauce Labs at {hubUrl}");
-            appiumDriver = new AndroidDriver<AndroidElement>(new Uri(hubUrl), capabilities);
-            // appiumDriver = new IOSDriver<IOSElement>(new Uri(hubUrl), capabilities);
+            // appiumDriver = new AndroidDriver<AndroidElement>(new Uri(hubUrl), capabilities);
+            appiumDriver = new IOSDriver<IOSElement>(new Uri(hubUrl), capabilities);
 
             Annotate("Waiting for app to start...");
-            Thread.Sleep(30000);
+            Thread.Sleep(10000);
+            try
+            {
+                IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow"));
+                ll.Click();
+            }
+            catch (NoSuchElementException)
+            {
+                Console.WriteLine("No 'Allow' permission dialog found, continuing...");
+            }
             Console.WriteLine("Appium driver started");
             Annotate("Connecting AltDriver to AltTester Server...");
             altDriver = new AltDriver();
@@ -64,8 +73,7 @@ namespace alttrashcat_tests_csharp.tests
             Console.WriteLine("AltDriver started");
             alttrashcat_tests_csharp.pages.BasePage.AnnotateCallback = Annotate;
 
-            // IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow")); //iOS
-            // ll.Click(); //iOS
+           
         }
 
         public void Annotate(string message, string level = "info")
@@ -79,7 +87,7 @@ namespace alttrashcat_tests_csharp.tests
             Console.WriteLine("Starting Sauce Connect tunnel...");
             tunnelProcess = new Process();
             tunnelProcess.StartInfo.FileName = "sc";
-            tunnelProcess.StartInfo.Arguments = $"run --username {user} --access-key {accessKey} --region {region} --tunnel-name {TunnelName} --api-address :{TunnelApiPort} --proxy-localhost allow";
+            tunnelProcess.StartInfo.Arguments = $"run --username {user} --access-key {accessKey} --region {region} --tunnel-name {TunnelName} --api-address :{TunnelApiPort} --proxy-localhost allow -B .*";
             tunnelProcess.StartInfo.UseShellExecute = false;
             tunnelProcess.StartInfo.RedirectStandardOutput = true;
             tunnelProcess.StartInfo.RedirectStandardError = true;
@@ -133,8 +141,8 @@ namespace alttrashcat_tests_csharp.tests
             var testResult = TestContext.CurrentContext.Result.Outcome.Status;
             var level = testResult == NUnit.Framework.Interfaces.TestStatus.Passed ? "info" : "error";
             Annotate($"Finished test: {TestContext.CurrentContext.Test.Name} - {testResult}", level);
-            appiumDriver.GetDisplayDensity(); //android
-            // appiumDriver.GetClipboardText(); //ios
+            // appiumDriver.GetDisplayDensity(); //android
+            appiumDriver.GetClipboardText(); //ios
         }
 
         [OneTimeTearDown]

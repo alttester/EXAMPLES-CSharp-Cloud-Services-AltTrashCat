@@ -8,7 +8,8 @@ namespace alttrashcat_tests_csharp.pages
         public void LoadScene()
         {
             Log("MainMenu: Loading scene");
-            Driver.LoadScene("Main");
+            if (Driver.GetCurrentScene() != "Main")
+                Driver.LoadScene("Main");
         }
         public AltObject CharacterName { get => Driver.WaitForObject(By.NAME, "CharName", timeout: 10); }
         public AltObject ThemeName { get => Driver.WaitForObject(By.NAME, "ThemeName", timeout: 10); }

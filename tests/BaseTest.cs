@@ -1,8 +1,8 @@
+using BrowserStack;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
-using BrowserStack;
 using OpenQA.Selenium.Appium.iOS;
-using OpenQA.Selenium;
 
 namespace alttrashcat_tests_csharp.tests
 {
@@ -18,7 +18,7 @@ namespace alttrashcat_tests_csharp.tests
         {
             String BROWSERSTACK_USERNAME = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
             String BROWSERSTACK_ACCESS_KEY = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY");
-            String BROWSERSTACK_APP_ID_SDK_201 = Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_201");
+            String BROWSERSTACK_APP_ID_SDK_201 = "TrashCatNonGPL.apk";
 
             // Use dot net bindings v4.0.0 or above
             AppiumOptions capabilities = new AppiumOptions();

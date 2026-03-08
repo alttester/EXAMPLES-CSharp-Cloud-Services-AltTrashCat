@@ -1,9 +1,9 @@
+using System.Runtime.InteropServices;
 using BrowserStack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.iOS;
-using System.Runtime.InteropServices;
 
 namespace alttrashcat_tests_csharp.tests
 {
@@ -38,7 +38,7 @@ namespace alttrashcat_tests_csharp.tests
             // capabilities.AddAdditionalCapability("platformName", "ios");
             // capabilities.AddAdditionalCapability("platformVersion", "16");
             // capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 14");
-            capabilities.AddAdditionalCapability("appium:app", BROWSERSTACK_APP_ID_SDK_201);
+            capabilities.AddAdditionalCapability("appium:app", "bs://ec1551ed284f4cd3c801661731c0d146ccbf281e");
 
             browserStackLocal = new Local();
             List<KeyValuePair<string, string>> bsLocalArgs = new List<KeyValuePair<string, string>>() {

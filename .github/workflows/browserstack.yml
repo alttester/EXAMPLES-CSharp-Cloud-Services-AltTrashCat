@@ -47,6 +47,7 @@ jobs:
             exit 0
           fi
 
+
           echo "Validating custom_id in BrowserStack recent apps"
           RESP=$(curl -sS -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" "https://api-cloud.browserstack.com/app-automate/recent_apps")
           if echo "$RESP" | grep -q '"custom_id":"'"$BROWSERSTACK_APP_ID_SDK_202"'"'; then

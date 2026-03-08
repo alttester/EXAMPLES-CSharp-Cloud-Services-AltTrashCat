@@ -78,6 +78,7 @@ namespace alttrashcat_tests_csharp.tests
 
             Thread.Sleep(30000);
             Console.WriteLine("Appium driver started");
+
             altDriver = new AltDriver("127.0.0.1", 13010);
             Console.WriteLine("AltDriver started");
 

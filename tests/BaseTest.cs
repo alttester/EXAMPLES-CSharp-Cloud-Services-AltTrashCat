@@ -78,7 +78,7 @@ namespace alttrashcat_tests_csharp.tests
 
             Thread.Sleep(30000);
             Console.WriteLine("Appium driver started");
-            altDriver = new AltDriver();
+            altDriver = new AltDriver("192.168.11.35", 13005);
             Console.WriteLine("AltDriver started");
 
             // IWebElement ll = appiumDriver.FindElement(OpenQA.Selenium.By.Id("Allow")); //iOS

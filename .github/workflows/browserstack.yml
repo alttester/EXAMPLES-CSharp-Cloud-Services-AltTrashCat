@@ -23,5 +23,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Download BrowserStackLocal
+        run: |
+          wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
+          unzip BrowserStackLocal-linux-x64.zip
+          chmod +x BrowserStackLocal
+          mv BrowserStackLocal /usr/local/bin/
+
       - name: "Running tests on BrowserStack"
         run: dotnet test --filter "StartPageTests"

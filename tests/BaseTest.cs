@@ -17,11 +17,11 @@ namespace alttrashcat_tests_csharp.tests
         [OneTimeSetUp]
         public void SetupAppium()
         {
-            String BROWSERSTACK_USERNAME = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
-            String BROWSERSTACK_ACCESS_KEY = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY");
+            String BROWSERSTACK_USERNAME = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME")?.Trim();
+            String BROWSERSTACK_ACCESS_KEY = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY")?.Trim();
             String BROWSERSTACK_APP_ID_SDK_202 =
-                Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_202") ??
-                Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_201");
+                Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_202")?.Trim() ??
+                Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_201")?.Trim();
 
             if (string.IsNullOrWhiteSpace(BROWSERSTACK_USERNAME) || string.IsNullOrWhiteSpace(BROWSERSTACK_ACCESS_KEY))
             {

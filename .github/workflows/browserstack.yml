@@ -42,14 +42,21 @@ jobs:
             exit 1
           fi
 
+          RESP=$(curl -sS -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" "https://api-cloud.browserstack.com/app-automate/recent_apps")
+
           if [[ "$BROWSERSTACK_APP_ID_SDK_202" == bs://* ]]; then
             echo "Using app_url format in BROWSERSTACK_APP_ID_SDK_202"
-            exit 0
+            if echo "$RESP" | grep -q '"app_url":"'"$BROWSERSTACK_APP_ID_SDK_202"'"'; then
+              echo "Found app_url: $BROWSERSTACK_APP_ID_SDK_202"
+              exit 0
+            fi
+
+            echo "app_url '$BROWSERSTACK_APP_ID_SDK_202' not found in this BrowserStack account"
+            exit 1
           fi
 
 
           echo "Validating custom_id in BrowserStack recent apps"
-          RESP=$(curl -sS -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" "https://api-cloud.browserstack.com/app-automate/recent_apps")
           if echo "$RESP" | grep -q '"custom_id":"'"$BROWSERSTACK_APP_ID_SDK_202"'"'; then
             echo "Found custom_id: $BROWSERSTACK_APP_ID_SDK_202"
           else

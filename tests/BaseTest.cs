@@ -19,13 +19,26 @@ namespace alttrashcat_tests_csharp.tests
         {
             String BROWSERSTACK_USERNAME = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
             String BROWSERSTACK_ACCESS_KEY = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY");
-            String BROWSERSTACK_APP_ID_SDK_201 = "TrashCatNonGPL.apk";
+            String BROWSERSTACK_APP_ID_SDK_202 = Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_202") ?? "TrashCatNonGPL.apk";
+
+            if (string.IsNullOrWhiteSpace(BROWSERSTACK_USERNAME) || string.IsNullOrWhiteSpace(BROWSERSTACK_ACCESS_KEY))
+            {
+                throw new InvalidOperationException("BrowserStack credentials are missing. Set BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY.");
+            }
+
+            if (string.IsNullOrWhiteSpace(BROWSERSTACK_APP_ID_SDK_202))
+            {
+                throw new InvalidOperationException("BROWSERSTACK_APP_ID_SDK_202 is missing. Use a valid app_url (bs://...), custom_id, or shareable_id.");
+            }
 
             // Use dot net bindings v4.0.0 or above
             AppiumOptions capabilities = new AppiumOptions();
             Dictionary<string, object> browserstackOptions = new Dictionary<string, object>();
             browserstackOptions.Add("projectName", "TrashCat");
-            browserstackOptions.Add("buildName", "TrashCat201");
+            string buildName = BROWSERSTACK_APP_ID_SDK_202.StartsWith("#file:", StringComparison.OrdinalIgnoreCase)
+                ? BROWSERSTACK_APP_ID_SDK_202.Substring("#file:".Length)
+                : BROWSERSTACK_APP_ID_SDK_202;
+            browserstackOptions.Add("buildName", buildName);
             browserstackOptions.Add("sessionName", "tests - " + DateTime.Now.ToString("MMMM dd - HH:mm"));
             browserstackOptions.Add("local", "true");
             browserstackOptions.Add("idleTimeout", "300");
@@ -38,7 +51,7 @@ namespace alttrashcat_tests_csharp.tests
             // capabilities.AddAdditionalCapability("platformName", "ios");
             // capabilities.AddAdditionalCapability("platformVersion", "16");
             // capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 14");
-            capabilities.AddAdditionalCapability("appium:app", "bs://ec1551ed284f4cd3c801661731c0d146ccbf281e");
+            capabilities.AddAdditionalCapability("appium:app", BROWSERSTACK_APP_ID_SDK_202);
 
             browserStackLocal = new Local();
             List<KeyValuePair<string, string>> bsLocalArgs = new List<KeyValuePair<string, string>>() {

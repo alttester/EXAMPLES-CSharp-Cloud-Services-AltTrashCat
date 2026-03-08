@@ -9,6 +9,7 @@ namespace alttrashcat_tests_csharp.pages
         public BasePage(AltDriver driver)
         {
             Driver = driver;
+
         }
     }
 }

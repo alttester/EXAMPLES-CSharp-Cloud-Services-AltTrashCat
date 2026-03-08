@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.iOS;
+using System.Runtime.InteropServices;
 
 namespace alttrashcat_tests_csharp.tests
 {
@@ -43,6 +44,18 @@ namespace alttrashcat_tests_csharp.tests
             List<KeyValuePair<string, string>> bsLocalArgs = new List<KeyValuePair<string, string>>() {
                         new KeyValuePair<string, string>("key", BROWSERSTACK_ACCESS_KEY)
                 };
+
+            string localBinaryPath = Environment.GetEnvironmentVariable("BROWSERSTACK_LOCAL_BINARY");
+            if (string.IsNullOrWhiteSpace(localBinaryPath) && RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                localBinaryPath = "/usr/local/bin/BrowserStackLocal";
+            }
+
+            if (!string.IsNullOrWhiteSpace(localBinaryPath))
+            {
+                bsLocalArgs.Add(new KeyValuePair<string, string>("binarypath", localBinaryPath));
+            }
+
             browserStackLocal.start(bsLocalArgs);
 
             appiumDriver = new AndroidDriver<AndroidElement>(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), capabilities);
@@ -64,7 +77,10 @@ namespace alttrashcat_tests_csharp.tests
         [TearDown]
         public void KeepAppiumAlive()
         {
-            appiumDriver.GetDisplayDensity(); //android
+            if (appiumDriver != null)
+            {
+                appiumDriver.GetDisplayDensity(); //android
+            }
             // appiumDriver.GetClipboardText(); //ios
         }
 
@@ -72,8 +88,16 @@ namespace alttrashcat_tests_csharp.tests
         public void DisposeAppium()
         {
             Console.WriteLine("Ending");
-            appiumDriver.Quit();
-            altDriver.Stop();
+            if (appiumDriver != null)
+            {
+                appiumDriver.Quit();
+            }
+
+            if (altDriver != null)
+            {
+                altDriver.Stop();
+            }
+
             if (browserStackLocal != null)
             {
                 browserStackLocal.stop();

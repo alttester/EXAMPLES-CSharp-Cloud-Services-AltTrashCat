@@ -30,5 +30,12 @@ jobs:
           chmod +x BrowserStackLocal
           mv BrowserStackLocal /usr/local/bin/
 
+      - name: Verify BrowserStackLocal binary
+        run: |
+          ls -l /usr/local/bin/BrowserStackLocal
+          /usr/local/bin/BrowserStackLocal --version || true
+
       - name: "Running tests on BrowserStack"
+        env:
+          BROWSERSTACK_LOCAL_BINARY: /usr/local/bin/BrowserStackLocal
         run: dotnet test --filter "StartPageTests"

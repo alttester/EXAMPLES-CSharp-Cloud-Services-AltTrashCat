@@ -44,16 +44,23 @@ jobs:
             exit 1
           fi
 
+          echo "APP_ID length: ${#APP_ID}"
+          echo "APP_ID prefix: ${APP_ID:0:5}"
+
+          RESP=$(curl -sS -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" \
+            "https://api-cloud.browserstack.com/app-automate/recent_apps")
+          echo "recent_apps response: $RESP"
+
           if [[ "$APP_ID" == bs://* ]]; then
-            echo "Using app_url format in BROWSERSTACK_APP_ID_SDK_202"
-            echo "app_url length: ${#APP_ID}"
-            exit 0
+            if echo "$RESP" | grep -qF "$APP_ID"; then
+              echo "app_url confirmed in this account"
+              exit 0
+            fi
+            echo "ERROR: app_url not found in this account's recent_apps. Check that BROWSERSTACK_USERNAME/ACCESS_KEY secrets match the account that uploaded the app."
+            exit 1
           fi
 
-
-          echo "Validating custom_id in BrowserStack recent apps"
-          RESP=$(curl -sS -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" "https://api-cloud.browserstack.com/app-automate/recent_apps")
-          if echo "$RESP" | grep -q '"custom_id":"'"$APP_ID"'"'; then
+          if echo "$RESP" | grep -qF "\"custom_id\":\"$APP_ID\""; then
             echo "Found custom_id: $APP_ID"
           else
             echo "custom_id '$APP_ID' not found in this BrowserStack account"

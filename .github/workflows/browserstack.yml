@@ -23,7 +23,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Download BrowserStackLocal
+      - name: Download BrowserStackLocal2
         run: |
           wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
           unzip BrowserStackLocal-linux-x64.zip

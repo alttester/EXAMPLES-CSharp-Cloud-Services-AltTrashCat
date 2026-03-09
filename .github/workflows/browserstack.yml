@@ -35,38 +35,6 @@ jobs:
           ls -l /usr/local/bin/BrowserStackLocal
           /usr/local/bin/BrowserStackLocal --version || true
 
-      - name: Validate BrowserStack app capability
-        run: |
-          APP_ID=$(printf "%s" "$BROWSERSTACK_APP_ID_SDK_202" | tr -d '\r' | xargs)
-
-          if [ -z "$APP_ID" ]; then
-            echo "BROWSERSTACK_APP_ID_SDK_202 is empty"
-            exit 1
-          fi
-
-          echo "APP_ID length: ${#APP_ID}"
-          echo "APP_ID prefix: ${APP_ID:0:5}"
-
-          RESP=$(curl -sS -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" \
-            "https://api-cloud.browserstack.com/app-automate/recent_apps")
-          echo "recent_apps response: $RESP"
-
-          if [[ "$APP_ID" == bs://* ]]; then
-            if echo "$RESP" | grep -qF "$APP_ID"; then
-              echo "app_url confirmed in this account"
-              exit 0
-            fi
-            echo "ERROR: app_url not found in this account's recent_apps. Check that BROWSERSTACK_USERNAME/ACCESS_KEY secrets match the account that uploaded the app."
-            exit 1
-          fi
-
-          if echo "$RESP" | grep -qF "\"custom_id\":\"$APP_ID\""; then
-            echo "Found custom_id: $APP_ID"
-          else
-            echo "custom_id '$APP_ID' not found in this BrowserStack account"
-            exit 1
-          fi
-
       - name: "Running tests on BrowserStack"
         env:
           BROWSERSTACK_LOCAL_BINARY: /usr/local/bin/BrowserStackLocal

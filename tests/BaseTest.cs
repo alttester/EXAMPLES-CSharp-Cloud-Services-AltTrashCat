@@ -19,9 +19,7 @@ namespace alttrashcat_tests_csharp.tests
         {
             String BROWSERSTACK_USERNAME = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME")?.Trim();
             String BROWSERSTACK_ACCESS_KEY = Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY")?.Trim();
-            String BROWSERSTACK_APP_ID_SDK_202 =
-                Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_202")?.Trim() ??
-                Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_201")?.Trim();
+            String BROWSERSTACK_APP_ID_SDK_202 = Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID_SDK_202")?.Trim();
 
             if (string.IsNullOrWhiteSpace(BROWSERSTACK_USERNAME) || string.IsNullOrWhiteSpace(BROWSERSTACK_ACCESS_KEY))
             {
@@ -30,7 +28,7 @@ namespace alttrashcat_tests_csharp.tests
 
             if (string.IsNullOrWhiteSpace(BROWSERSTACK_APP_ID_SDK_202))
             {
-                throw new InvalidOperationException("BrowserStack app id is missing. Set BROWSERSTACK_APP_ID_SDK_202 (or BROWSERSTACK_APP_ID_SDK_201) to a valid app_url (bs://...), custom_id, or shareable_id.");
+                throw new InvalidOperationException("BrowserStack app id is missing. Set BROWSERSTACK_APP_ID_SDK_202 to a valid app_url (bs://...), custom_id, or shareable_id.");
             }
 
             // Use dot net bindings v4.0.0 or above

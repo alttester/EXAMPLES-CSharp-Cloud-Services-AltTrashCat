@@ -9,6 +9,7 @@ namespace alttrashcat_tests_csharp.tests
         GameOverScreen gameOverScreen;
         SettingsPage settingsPage;
         StorePage storePage;
+
         [SetUp]
         public void Setup()
         {

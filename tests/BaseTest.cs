@@ -10,8 +10,8 @@ namespace alttrashcat_tests_csharp.tests
     public class BaseTest
     {
         public AltDriver altDriver;
-        // AndroidDriver<AndroidElement> appiumDriver;
-        IOSDriver<IOSElement> appiumDriver;
+        // AndroidDriver appiumDriver;
+        IOSDriver appiumDriver;
         private static Process tunnelProcess;
         private const int TunnelApiPort = 8032;
         private const string TunnelName = "alttester-tunnel";
@@ -27,18 +27,18 @@ namespace alttrashcat_tests_csharp.tests
             StartTunnel(SAUCE_USERNAME, SAUCE_ACCESS_KEY, SAUCE_REGION);
 
             AppiumOptions capabilities = new AppiumOptions();
-            // capabilities.AddAdditionalCapability("platformName", "Android");
-            capabilities.AddAdditionalCapability("platformName", "iOS");
-            capabilities.AddAdditionalCapability("appium:app", SAUCE_APP_URL);
-            // capabilities.AddAdditionalCapability("appium:deviceName", "Samsung.*");
-            // capabilities.AddAdditionalCapability("appium:platformVersion", "");
-            capabilities.AddAdditionalCapability("appium:deviceName", "iPhone 1[5-9].*");
-            capabilities.AddAdditionalCapability("appium:platformVersion", "18");
-            capabilities.AddAdditionalCapability("appium:deviceOrientation", "portrait");
-            // capabilities.AddAdditionalCapability("appium:automationName", "UiAutomator2");
-            capabilities.AddAdditionalCapability("appium:automationName", "XCUITest");
-            capabilities.AddAdditionalCapability("appium:newCommandTimeout", 2000);
-            capabilities.AddAdditionalCapability("appium:autoGrantPermissions", true);
+            // capabilities.PlatformName = "Android";
+            capabilities.PlatformName = "iOS";
+            capabilities.App = SAUCE_APP_URL;
+            // capabilities.DeviceName = "Samsung.*";
+            // capabilities.AddAdditionalAppiumOption("appium:platformVersion", "");
+            capabilities.DeviceName = "iPhone 1[5-9].*";
+            capabilities.PlatformVersion = "18";
+            capabilities.AddAdditionalAppiumOption("appium:deviceOrientation", "portrait");
+            // capabilities.AutomationName = "UiAutomator2";
+            capabilities.AutomationName = "XCUITest";
+            capabilities.AddAdditionalAppiumOption("appium:newCommandTimeout", 2000);
+            capabilities.AddAdditionalAppiumOption("appium:autoGrantPermissions", true);
 
             var sauceOptions = new Dictionary<string, object>();
             sauceOptions.Add("username", SAUCE_USERNAME);
@@ -48,12 +48,12 @@ namespace alttrashcat_tests_csharp.tests
             sauceOptions.Add("tunnelIdentifier", TunnelName);
             sauceOptions.Add("tunnelOwner", SAUCE_USERNAME);
             sauceOptions.Add("appiumVersion", "latest");
-            capabilities.AddAdditionalCapability("sauce:options", sauceOptions);
+            capabilities.AddAdditionalAppiumOption("sauce:options", sauceOptions);
 
-            string hubUrl = $"https://ondemand.{SAUCE_REGION}.saucelabs.com:443/wd/hub";
-            Console.WriteLine($"Connecting to Sauce Labs at {hubUrl}");
-            // appiumDriver = new AndroidDriver<AndroidElement>(new Uri(hubUrl), capabilities);
-            appiumDriver = new IOSDriver<IOSElement>(new Uri(hubUrl), capabilities);
+            string hubUrl = $"https://{SAUCE_USERNAME}:{SAUCE_ACCESS_KEY}@ondemand.{SAUCE_REGION}.saucelabs.com:443/wd/hub";
+            Console.WriteLine($"Connecting to Sauce Labs at https://ondemand.{SAUCE_REGION}.saucelabs.com:443/wd/hub");
+            // appiumDriver = new AndroidDriver(new Uri(hubUrl), capabilities, TimeSpan.FromSeconds(300));
+            appiumDriver = new IOSDriver(new Uri(hubUrl), capabilities, TimeSpan.FromSeconds(300));
 
             Annotate("Waiting for app to start...");
             Thread.Sleep(10000);
